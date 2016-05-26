@@ -25,6 +25,7 @@
  */
 package tank;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,6 @@ public class GameManager
         // Repaint Game Area
         resetGameArea();
         
-        System.out.println("Game Manager Started in mode: " + game_mode);
         if(game_mode == 0) {
             singlePlayerScheme();
         }
@@ -72,6 +72,7 @@ public class GameManager
     
     public void addPlayerToParty(int party, Player player)
     {
+        player.setParty(party);
         players.add(player);
     }
     
@@ -81,9 +82,18 @@ public class GameManager
         area.repaint();
     }
     
-    private boolean lookForPlayerWorlds()
+    private boolean lookForPlayerWorlds(String player_name)
     {
-        return false;
+        /* 
+         * Check if there is a database file in the user's worlds directory,
+         * no need to check inside the file, as this is created just when
+         * there is a finalized world construction.
+        */
+        File temp = new File("data/worlds/" + player_name + ".db");
+        if(temp.isFile())
+            return true;
+        else
+            return false;
     }
     
     private int getCurrentLevel()
@@ -100,10 +110,9 @@ public class GameManager
     {
         if(players.isEmpty())
             addPlayerToParty(0, new Player(LOCAL));
-        if(lookForPlayerWorlds())
-            System.out.println("fdsk");
+        if(lookForPlayerWorlds(players.get(0).getName()))
+            new WorldSelector(area).loadWorldOptions(game_mode);
         else {
-            
             // Get the world map, in the form of a matrix
             int[][] world_matrix = null;
             getWorldMatrix(world_matrix, getCurrentLevel());

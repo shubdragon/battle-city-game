@@ -31,7 +31,7 @@ package tank;
  */
 public class Player
 {
-    private String name;
+    private String name = "local";
     private int party;
     
     // local player code
@@ -45,5 +45,15 @@ public class Player
     public void setParty(int party)
     {
         this.party = party;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
     }
 }
