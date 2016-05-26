@@ -1,0 +1,72 @@
+a     :    tanque rápido
+b     :    tanque normal
+c     :    tanque pequeño
+d     :    tanque de balística
+e     :    tanque de reconocimiento
+f     :    tanque acuático
+g     :    tanque de fuego rápido
+h     :    tanque de alto recubrimiento
+
+I     :    muro de ladrillos
+J     :    muro de acero
+K     :    muro de acero fruñido
+L     :    bosque
+M     :    agua
+i     :    cuarto de ladrillo
+j     :    cuarto de acero
+k     :    cuarto de acero fruñido
+l     :    cuarto de bosque
+m     :    cuarto de agua
+y     :    medio cuarto de ladrillo
+n     :    valla de hierro
+o     :    valla de ladrillo
+N     :    valla de hierro grande
+O     :    valla de ladrillo grande
+
+p     :    poder de barrera protectora
+q     :    poder de congelamiento
+r     :    poder de protección de base
+s     :    poder de mejora
+t     :    poder de granada
+u     :    poder de vida extra
+v     :    poder de disparo ráfaga
+
+z     :    aguila
+Z     :    bandera caida
+
+La unidad mínima del mundo es 1/4 de bloque, dado que el mundo es de 18x25 bloques, hay una densidad de puntos de
+1800. La forma de representación será la siguiente:
+
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+
+donde el punto en <<{.}>> indica una cadena de cuatro caracteres, para indicar la forma en la que irían ubicados en su contenedor superior:
+Ejemplo:
+{iiii} es equivalente a {I} dado que ambos representan el bloque L L
+                                                                 L L
+
+
+
+
+
+
+
+
+
+
