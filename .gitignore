@@ -1,3 +1,4 @@
 build/
 dist/
+resources/local_only/
 build.xml

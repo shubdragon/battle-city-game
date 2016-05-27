@@ -1,3 +1,5 @@
+Código para generar matriz de descripción
+
 a     :    tanque rápido
 b     :    tanque normal
 c     :    tanque pequeño
@@ -31,7 +33,7 @@ t     :    poder de granada
 u     :    poder de vida extra
 v     :    poder de disparo ráfaga
 
-z     :    aguila
+X     :    aguila
 Z     :    bandera caida
 
 La unidad mínima del mundo es 1/4 de bloque, dado que el mundo es de 18x25 bloques, hay una densidad de puntos de
@@ -60,6 +62,34 @@ donde el punto en <<{.}>> indica una cadena de cuatro caracteres, para indicar l
 Ejemplo:
 {iiii} es equivalente a {I} dado que ambos representan el bloque L L
                                                                  L L
+
+En el archivo de base de datos en cada celda se guarda un tipo de dato CHARACTER de tamaño 4.
+
+EJEMPLO DE MUNDO:
+
+    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    
+    ,    ,    ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,  jj,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,jj  ,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,K   ,    ,iijj,    ,I   ,I   ,    ,    ,    ,    ,    ,I   ,I   ,    ,iijj,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,I   ,  ii,I   ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,I   ,    ,I   ,    ,I   ,ii  ,I   ,    ,I   ,    ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,I   ,    ,    ,    ,    ,    ,    ,    ,I   ,    ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,I   ,I   ,    ,    ,    ,    ,    ,    ,    ,I   ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,   i,  ii,  i ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,    ,    ,    ,    , i i,X   ,i i ,    ,    ,    ,    ,    ,    ,    ,    
+
+
+
+
+
 
 
 
