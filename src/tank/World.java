@@ -29,9 +29,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -52,17 +51,29 @@ public class World
     
     private void setPlayground()
     {
-        playground.setLayout(new GridLayout(18, 19));
-        playground.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
+        playground.setLayout(new GridLayout(15, 17));
+        playground.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
     }
     
     public void start()
     {
-        // Adding playground to game area
         GridBagConstraints c = new GridBagConstraints();
+        // Add world title to game area
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.ipady = 20;
+        MenuOption world_title = new MenuOption(graph.getLevelName(), container);
+        world_title.setForeground(new Color(250, 250, 250));
+        world_title.setHorizontalAlignment(SwingConstants.CENTER);
+        world_title.formatFont("resources/fonts/ARCADECLASSIC.ttf", 40.0f);
+        container.add(world_title, c);
+        
+        // Adding playground to game area
         c.fill = GridBagConstraints.NONE;
         c.gridx = 1;
         c.gridy = 1;
+        c.ipady = 0;
         playground.setVisible(true);
         playground.setBackground(Color.BLUE);
         container.add(playground, c);

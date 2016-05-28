@@ -25,6 +25,7 @@
  */
 package tank;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class BlockDescriptor extends JPanel implements Descriptor
     {
         super(new GridBagLayout());
         this.imgs = new ArrayList<>();
+        this.setBackground(Color.BLACK);
     }
     
     @Override

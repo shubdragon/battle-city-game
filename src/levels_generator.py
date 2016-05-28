@@ -20,11 +20,11 @@ if __name__ == '__main__':
         if line[0] == ':':
             table_name = line[1:].replace('\n', '')
             command = 'CREATE TABLE IF NOT EXISTS "' + table_name + '"('
-            for i in range(1, 19):
+            for i in range(1, 17):
                 command += 'cell_' + str(i) + ' CHARACTER(4), '
-            command += 'cell_19 CHARACTER(4))'
+            command += 'cell_17 CHARACTER(4))'
             c.execute(command)
-        if line[0] == ' ':
+        if line[0] != ':':
             line_edit = line.replace('\n', '')
             command = 'INSERT INTO "' + table_name + '" VALUES('
             for i in line_edit.split(','):

@@ -150,11 +150,11 @@ public class GameManager
             new WorldSelector(area).loadWorldOptions(game_mode);
         else {
             // Get the world map, in the form of a matrix
-            String[][] world_matrix = new String[18][19];
+            String[][] world_matrix = new String[15][17];
             getWorldMatrix(world_matrix, getCurrentLevel());
 
             // Generate a GraphDescriptor object with the elements of the matrix
-            GraphDescriptor graph = new GraphDescriptor(world_matrix);
+            GraphDescriptor graph = new GraphDescriptor(world_matrix, LEVEL_NAMES.get(getCurrentLevel()));
             graph.translate(null);
             
             //Create World with graph information

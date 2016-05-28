@@ -35,21 +35,28 @@ import java.util.List;
  */
 public class GraphDescriptor implements Descriptor
 {
-    public String[][] im = new String[18][19];
+    public String[][] im = new String[15][17];
     public List<List<BlockDescriptor>> graph = new ArrayList<>();
+    private final String level_name;
             
-    public GraphDescriptor(String[][] input_matrix)
+    public GraphDescriptor(String[][] input_matrix, String level_name)
     {
         im = input_matrix;
+        this.level_name = level_name;
+    }
+    
+    public String getLevelName()
+    {
+        return level_name;
     }
     
     @Override
     public void translate(Object o)
     {
         BlockDescriptor bck;
-        for(int i = 0; i < 18; ++i) {
+        for(int i = 0; i < 15; ++i) {
             graph.add(new ArrayList<>());
-            for(int j = 0; j < 19; ++j) {
+            for(int j = 0; j < 17; ++j) {
                 bck = new BlockDescriptor();
                 bck.translate(im[i][j]);
                 graph.get(i).add(bck);
