@@ -28,6 +28,7 @@ package tank;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,6 +53,7 @@ public class World
     private void setPlayground()
     {
         playground.setLayout(new GridLayout(18, 19));
+        playground.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
     }
     
     public void start()
@@ -59,8 +61,6 @@ public class World
         // Adding playground to game area
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.NONE;
-        //c.ipadx = 100;
-        //c.ipady = 100;
         c.gridx = 1;
         c.gridy = 1;
         playground.setVisible(true);
@@ -69,11 +69,9 @@ public class World
         container.updateUI();
         
         // Fill game area with graph descriptor content
-        ImageIcon grassIcon = new ImageIcon("resources/blocks/terrain/grass.png");
-        JLabel grass;
-        for(int i = 0; i < 342; ++i) {
-            grass = new JLabel(grassIcon);
-            playground.add(grass);
+        for(int i = 0; i < graph.graph.size(); ++i) {
+            for(int j = 0; j < graph.graph.get(i).size(); ++j)
+                playground.add(graph.graph.get(i).get(j));
         }
     }
 }

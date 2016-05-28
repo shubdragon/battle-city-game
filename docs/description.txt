@@ -14,7 +14,6 @@ J     :    steel
 K     :    iron
 L     :    forest
 M     :    sea
-N     :    river
 O     :    deepsea
 
 i     :    small brick
@@ -22,7 +21,6 @@ j     :    small steel
 k     :    small iron
 l     :    small forest
 m     :    small sea
-N     :    small river
 O     :    small deepsea
 
 p     :    poder de barrera protectora
@@ -33,8 +31,11 @@ t     :    poder de granada
 u     :    poder de vida extra
 v     :    poder de disparo ráfaga
 
-X     :    aguila
-Z     :    bandera caida
+Y     :    void
+y     :    small_void
+
+X     :    eagle
+Z     :    dead flag
 
 La unidad mínima del mundo es 1/4 de bloque, dado que el mundo es de 18x25 bloques, hay una densidad de puntos de
 1800. La forma de representación será la siguiente:

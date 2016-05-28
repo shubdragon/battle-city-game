@@ -25,9 +25,12 @@
  */
 package tank;
 
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -36,26 +39,117 @@ import javax.swing.JPanel;
  */
 public class BlockDescriptor extends JPanel implements Descriptor
 {
-    private ArrayList<ImageIcon> imgs = new ArrayList<>();
+    private final List<String> imgs;
     public BlockDescriptor()
     {
         super(new GridBagLayout());
+        this.imgs = new ArrayList<>();
     }
     
     @Override
     public void translate(Object o)
     {
         String code = (String) o;
+        GridBagConstraints c = new GridBagConstraints();
         
-        // Create array of images from codes
-        for(int i = 0; i < 4; ++i)
-            imgs.add(new ImageIcon(decisor(code)));   
+        // Convert codes to urls
+        for(char ch: code.toCharArray()) {
+            if (Character.isUpperCase(ch)) {
+                imgs.add(decisor(ch));
+                break;
+            }
+            if(ch == ' ')
+                imgs.add(decisor('v'));
+            else
+                imgs.add(decisor(ch));
+        }
+        
+        // Convert url into paintable block object
+        c.ipadx = 0;
+        c.ipady = 0;
+        if(imgs.size() == 1) {
+            c.gridx = 0;
+            c.gridy = 0;
+            c.gridwidth = 2;
+            c.gridheight = 2;
+            this.add(new JLabel(new ImageIcon(imgs.get(0))), c);
+        }
+        else {
+            c.gridwidth = 1;
+            c.gridheight = 1;
+            for(int i = 0, j = 0; i < imgs.size(); ++i) {
+                if(i > 1) {
+                    c.gridx = j;
+                    c.gridy = 1;
+                    ++j;
+                }
+                else {
+                    c.gridx = i;
+                    c.gridy = 0;
+                }
+                this.add(new JLabel(new ImageIcon(imgs.get(i))), c);
+            }
+        }
     }
     
-    public String decisor(String code)
+    public String decisor(char code)
     {
-        String uri = "";
-        
+        String uri = "resources/blocks/terrain/";
+        switch(code) {
+            case 'I':
+                uri += "brick.png";
+                break;
+            case 'J':
+                uri += "steel.png";
+                break;
+            case 'K':
+                uri += "iron.png";
+                break;
+            case 'L':
+                uri += "forest.png";
+                break;
+            case 'M':
+                uri += "sea.png";
+                break;
+            case 'O':
+                uri += "deepsea.png";
+                break;
+            case 'V':
+                uri += "void.png";
+                break;
+            case 'X':
+                uri += "eagle.png";
+                break;
+            case 'Z':
+                uri += "deadflag.png";
+                break;
+            
+            case 'i':
+                uri += "small_brick.png";
+                break;
+            case 'j':
+                uri += "small_steel.png";
+                break;
+            case 'k':
+                uri += "small_iron.png";
+                break;
+            case 'l':
+                uri += "small_forest.png";
+                break;
+            case 'm':
+                uri += "small_sea.png";
+                break;
+            case 'o':
+                uri += "small_deepsea.png";
+                break;
+            case 'v':
+                uri += "small_void.png";
+                break;
+                
+            default:
+                uri = "";
+                break;
+        }
         
         return uri;
     }
