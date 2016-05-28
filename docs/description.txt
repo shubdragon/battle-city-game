@@ -1,4 +1,4 @@
-Código para generar matriz de descripción
+Codes to generate graph
 
 a     :    tanque rápido
 b     :    tanque normal
@@ -9,21 +9,21 @@ f     :    tanque acuático
 g     :    tanque de fuego rápido
 h     :    tanque de alto recubrimiento
 
-I     :    muro de ladrillos
-J     :    muro de acero
-K     :    muro de acero fruñido
-L     :    bosque
-M     :    agua
-i     :    cuarto de ladrillo
-j     :    cuarto de acero
-k     :    cuarto de acero fruñido
-l     :    cuarto de bosque
-m     :    cuarto de agua
-y     :    medio cuarto de ladrillo
-n     :    valla de hierro
-o     :    valla de ladrillo
-N     :    valla de hierro grande
-O     :    valla de ladrillo grande
+I     :    brick
+J     :    steel
+K     :    iron
+L     :    forest
+M     :    sea
+N     :    river
+O     :    deepsea
+
+i     :    small brick
+j     :    small steel
+k     :    small iron
+l     :    small forest
+m     :    small sea
+N     :    small river
+O     :    small deepsea
 
 p     :    poder de barrera protectora
 q     :    poder de congelamiento

@@ -25,35 +25,38 @@
  */
 package tank;
 
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
-import java.util.List;
-
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 /**
  *
  * @author asmateus
  */
-public class GraphDescriptor implements Descriptor
+public class BlockDescriptor extends JPanel implements Descriptor
 {
-    public String[][] im = new String[18][19];
-    public List<List<BlockDescriptor>> graph = new ArrayList<>();
-            
-    public GraphDescriptor(String[][] input_matrix)
+    private ArrayList<ImageIcon> imgs = new ArrayList<>();
+    public BlockDescriptor()
     {
-        im = input_matrix;
+        super(new GridBagLayout());
     }
     
     @Override
     public void translate(Object o)
     {
-        BlockDescriptor bck;
-        for(int i = 0; i < 18; ++i) {
-            graph.add(new ArrayList<>());
-            for(int j = 0; j < 19; ++j) {
-                bck = new BlockDescriptor();
-                bck.translate(im[i][j]);
-                graph.get(i).add(bck);
-            }
-        }
+        String code = (String) o;
+        
+        // Create array of images from codes
+        for(int i = 0; i < 4; ++i)
+            imgs.add(new ImageIcon(decisor(code)));   
+    }
+    
+    public String decisor(String code)
+    {
+        String uri = "";
+        
+        
+        return uri;
     }
 }

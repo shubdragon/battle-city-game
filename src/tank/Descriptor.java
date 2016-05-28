@@ -31,5 +31,5 @@ package tank;
  */
 public interface Descriptor 
 {
-    public void translate(String[][] origin);
+    public void translate(Object o);
 }

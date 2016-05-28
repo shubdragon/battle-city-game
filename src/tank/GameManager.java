@@ -155,6 +155,7 @@ public class GameManager
 
             // Generate a GraphDescriptor object with the elements of the matrix
             GraphDescriptor graph = new GraphDescriptor(world_matrix);
+            graph.translate(null);
             
             //Create World with graph information
             World world = new World(graph, area);
