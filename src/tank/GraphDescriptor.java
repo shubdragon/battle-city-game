@@ -32,7 +32,16 @@ package tank;
  */
 public class GraphDescriptor implements Descriptor
 {
+    
+    public String[][] im = new String[18][19];
+    
     public GraphDescriptor(String[][] input_matrix)
+    {
+        im = input_matrix;
+    }
+    
+    @Override
+    public void translate(String[][] origin)
     {
         
     }

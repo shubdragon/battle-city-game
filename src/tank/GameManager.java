@@ -46,7 +46,7 @@ public class GameManager
     private final int LOCAL = 1000;
     private final int FOREIGN = 1001;
     
-    private final String WORLD_PATH = "//home/asmateus/git/battle-city-game/data/worlds/";
+    private final String WORLD_PATH = "data/worlds/";
     private final List<String> LEVEL_NAMES = new ArrayList<>();
     
     private int game_mode = 0;
@@ -157,7 +157,7 @@ public class GameManager
             GraphDescriptor graph = new GraphDescriptor(world_matrix);
             
             //Create World with graph information
-            World world = new World(graph);
+            World world = new World(graph, area);
             world.start();
         }    
     }

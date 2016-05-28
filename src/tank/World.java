@@ -25,6 +25,13 @@
  */
 package tank;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 /**
  *
  * @author asmateus
@@ -32,14 +39,41 @@ package tank;
 public class World
 {
     private final GraphDescriptor graph;
+    private final GameArea container;
+    private final JPanel playground = new JPanel();
     
-    public World(GraphDescriptor graph)
+    public World(GraphDescriptor graph, GameArea container)
     {
         this.graph = graph;
+        this.container = container;
+        setPlayground();
+    }
+    
+    private void setPlayground()
+    {
+        playground.setLayout(new GridLayout(18, 19));
     }
     
     public void start()
     {
+        // Adding playground to game area
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.NONE;
+        //c.ipadx = 100;
+        //c.ipady = 100;
+        c.gridx = 1;
+        c.gridy = 1;
+        playground.setVisible(true);
+        playground.setBackground(Color.BLUE);
+        container.add(playground, c);
+        container.updateUI();
         
+        // Fill game area with graph descriptor content
+        ImageIcon grassIcon = new ImageIcon("resources/blocks/terrain/grass.png");
+        JLabel grass;
+        for(int i = 0; i < 342; ++i) {
+            grass = new JLabel(grassIcon);
+            playground.add(grass);
+        }
     }
 }
