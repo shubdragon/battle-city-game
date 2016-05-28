@@ -26,10 +26,11 @@
 package tank;
 
 import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  *
  * @author asmateus
  * This class manages the game play, making it independent from the rest of the
@@ -45,11 +46,21 @@ public class GameManager
     private final int LOCAL = 1000;
     private final int FOREIGN = 1001;
     
+    private final String WORLD_PATH = "//home/asmateus/git/battle-city-game/data/worlds/";
+    private final List<String> LEVEL_NAMES = new ArrayList<>();
+    
     private int game_mode = 0;
     
     public GameManager(GameArea area)
     {
         this.area = area;
+        setLevelNames();
+    }
+    
+    private void setLevelNames()
+    {
+        LEVEL_NAMES.add("null");
+        LEVEL_NAMES.add("Noob land");
     }
     
     public void startGameSession()
@@ -101,8 +112,33 @@ public class GameManager
         return 1;
     }
     
-    private void getWorldMatrix(int[][] matrix, int level)
+    private void getWorldMatrix(String[][] matrix, int level)
     {
+        // Stablish a connection with the SQLite db at the given path
+        String db_path = "jdbc:sqlite:" + WORLD_PATH + "levels.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(db_path);
+        } 
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        // Construct connection string
+        String command = "SELECT * FROM [" + level + ":" + LEVEL_NAMES.get(level) + "]";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(command);
+            int i = 0;
+            while(rs.next()) {
+                for(int j = 1; j < rs.getMetaData().getColumnCount() + 1; ++j)
+                    matrix[i][j - 1] = rs.getString(j);
+                ++i;
+            }
+        } 
+        catch (SQLException e) {
+            System.out.println(e);
+        }
         
     }
     
@@ -114,9 +150,9 @@ public class GameManager
             new WorldSelector(area).loadWorldOptions(game_mode);
         else {
             // Get the world map, in the form of a matrix
-            int[][] world_matrix = null;
+            String[][] world_matrix = new String[18][19];
             getWorldMatrix(world_matrix, getCurrentLevel());
-            
+
             // Generate a GraphDescriptor object with the elements of the matrix
             GraphDescriptor graph = new GraphDescriptor(world_matrix);
             

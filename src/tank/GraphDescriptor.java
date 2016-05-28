@@ -25,13 +25,14 @@
  */
 package tank;
 
+
 /**
  *
  * @author asmateus
  */
 public class GraphDescriptor implements Descriptor
 {
-    public GraphDescriptor(int[][] input_matrix)
+    public GraphDescriptor(String[][] input_matrix)
     {
         
     }
