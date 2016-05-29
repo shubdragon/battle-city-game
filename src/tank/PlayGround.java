@@ -31,6 +31,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -59,7 +61,7 @@ public class PlayGround extends JLayeredPane
 {
     private final JPanel paths;
     private final JPanel blocks;
-    private final JPanel toys;
+    private final ToysArea toys;
     
     private final GridBagConstraints c = new GridBagConstraints();
     private final List<List<BlockDescriptor>> bg;
@@ -71,10 +73,10 @@ public class PlayGround extends JLayeredPane
         
         paths = new JPanel(new GridLayout(15, 17));
         blocks = new JPanel(new GridLayout(15, 17));
-        toys = new JPanel();
+        toys = new ToysArea(544, 480);
         
         // Manually set bounds
-        this.setBound();
+        this.setPGElements();
         
         this.bg = gd.block_graph;
         
@@ -84,11 +86,15 @@ public class PlayGround extends JLayeredPane
         super.setVisible(true);
     }
     
-    private void setBound()
+    private void setPGElements()
     {
         paths.setBounds(4, 4, 544, 480);
         blocks.setBounds(4, 4, 544, 480);
         toys.setBounds(4, 4, 544, 480);
+        
+        paths.setOpaque(false);
+        blocks.setOpaque(false);
+        toys.setOpaque(false);
     }
     
     // GridBagConstraints of PlayGround for setting it in GameArea.
@@ -104,7 +110,7 @@ public class PlayGround extends JLayeredPane
     
     private void fillPlayGround()
     {
-        // block graph will divide its elements in blocks and paths containers
+        // block graph will divide its elements in blocks and paths containers,
         for(int i = 0; i < bg.size(); ++i) {
             for(int j = 0; j < bg.get(i).size(); ++j)
                 blocks.add(bg.get(i).get(j));
@@ -118,7 +124,10 @@ public class PlayGround extends JLayeredPane
     
     public void startPG()
     {        
-        this.add(blocks, new Integer(0));
+        this.add(blocks, new Integer(1));
+        this.add(toys, new Integer(2));
+        this.add(paths, new Integer(0));
         
+        toys.repaint();
     }
 }
