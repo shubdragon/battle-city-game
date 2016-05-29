@@ -25,6 +25,7 @@
  */
 package tank;
 
+import java.awt.Color;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -61,6 +62,21 @@ public class GameManager
     {
         LEVEL_NAMES.add("null");
         LEVEL_NAMES.add("Noob land");
+        LEVEL_NAMES.add("The enemies' fortress");
+        LEVEL_NAMES.add("BadLands");
+        LEVEL_NAMES.add("The creeper");
+        LEVEL_NAMES.add("Silent River");
+        LEVEL_NAMES.add("Cliffs");
+        LEVEL_NAMES.add("Metal Fever");
+        LEVEL_NAMES.add("The Swamp");
+        LEVEL_NAMES.add("Monoliths");
+        LEVEL_NAMES.add("Mischievous forest");
+        LEVEL_NAMES.add("Evil's Mouth");
+        LEVEL_NAMES.add("Iron Cage");
+        LEVEL_NAMES.add("Blood Chain");
+        LEVEL_NAMES.add("Sordid Moorland");
+        LEVEL_NAMES.add("True Master");
+        LEVEL_NAMES.add("Final Stage");
     }
     
     public void startGameSession()
@@ -90,6 +106,7 @@ public class GameManager
     private void resetGameArea()
     {
         area.removeAll();
+        area.setBackground(Color.GRAY);
         area.repaint();
     }
     
@@ -151,14 +168,14 @@ public class GameManager
         else {
             // Get the world map, in the form of a matrix
             String[][] world_matrix = new String[15][17];
-            getWorldMatrix(world_matrix, getCurrentLevel());
+            getWorldMatrix(world_matrix, this.getCurrentLevel());
 
             // Generate a GraphDescriptor object with the elements of the matrix
-            GraphDescriptor graph = new GraphDescriptor(world_matrix, LEVEL_NAMES.get(getCurrentLevel()));
+            GraphDescriptor graph = new GraphDescriptor(world_matrix);
             graph.translate(null);
             
             //Create World with graph information
-            World world = new World(graph, area);
+            World world = new World(LEVEL_NAMES.get(this.getCurrentLevel()), graph, area);
             world.start();
         }    
     }

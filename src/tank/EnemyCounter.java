@@ -25,39 +25,46 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author asmateus
- * The GraphDescriptor Class is a utility entity that provides 2 types of Graphs:
- *  A block graph, for holding the elements to be drawn in the PlayGround
- *  A weigh graph, for constructing optimum path in the AI of the Enemies
- * 
  */
-public class GraphDescriptor implements Descriptor
+public class EnemyCounter extends JPanel 
 {
-    public String[][] im = new String[15][17];
-    public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
-            
-    public GraphDescriptor(String[][] input_matrix)
+    int counter;
+    
+    public EnemyCounter()
     {
-        im = input_matrix;
+        super(new GridLayout(12, 2));
+        super.setBackground(Color.GRAY);
     }
     
-    @Override
-    public void translate(Object o)
+    public void startCounter()
     {
-        BlockDescriptor bck;
-        for(int i = 0; i < 15; ++i) {
-            block_graph.add(new ArrayList<>());
-            for(int j = 0; j < 17; ++j) {
-                bck = new BlockDescriptor();
-                bck.translate(im[i][j]);
-                block_graph.get(i).add(bck);
-            }
-        }
+        this.reset();
+        
+        // Draw enemies no screen
+        for(int i = 0; i < counter; ++i)
+            this.add(new JLabel(new ImageIcon("resources/blocks/status/enemy_counter.png")));
+    }
+    
+    private void reset()
+    {
+        /**
+         * Get enemy counter to its initial value, this gets the enemy number
+         * from worlds settings via the LightHouse.
+         */
+        counter = getLocalCount();
+    }
+    
+    private int getLocalCount()
+    {
+        return 24;
     }
 }

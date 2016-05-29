@@ -27,62 +27,118 @@ package tank;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import java.awt.Insets;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
  *
  * @author asmateus
+ * 
+ * World has four main things aside from its container:
+ *  A PlayGround
+ *  A Title
+ *  A Status Panel
+ *  A Graph Descriptor
+ * The World class also need some utility Classes:
+ *  A LightHouse
+ *
  */
+
 public class World
 {
     private final GraphDescriptor graph;
     private final GameArea container;
-    private final JPanel playground = new JPanel();
+    private final PlayGround playground;
     
-    public World(GraphDescriptor graph, GameArea container)
+    private final String title;
+    
+    public World(String title, GraphDescriptor graph, GameArea container)
     {
-        this.graph = graph;
+        this.title = title;
+        
         this.container = container;
-        setPlayground();
+        this.graph = graph;
+        this.playground = new PlayGround(this.graph);
     }
     
-    private void setPlayground()
+    private void setWorldTitle(GridBagConstraints c)
     {
-        playground.setLayout(new GridLayout(15, 17));
-        playground.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.ipady = 20;
+        
+        Label world_title = new Label(title);
+        world_title.setForeground(new Color(250, 250, 250));
+        world_title.setHorizontalAlignment(SwingConstants.CENTER);
+        world_title.setFont("resources/fonts/ARCADECLASSIC.ttf", 40.0f);
+        
+        container.add(world_title, c);
+    }
+    
+    private int getNumByTitle()
+    {
+        return 1;
     }
     
     public void start()
     {
         GridBagConstraints c = new GridBagConstraints();
+        
         // Add world title to game area
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 0;
-        c.ipady = 20;
-        MenuOption world_title = new MenuOption(graph.getLevelName(), container);
-        world_title.setForeground(new Color(250, 250, 250));
-        world_title.setHorizontalAlignment(SwingConstants.CENTER);
-        world_title.formatFont("resources/fonts/ARCADECLASSIC.ttf", 40.0f);
-        container.add(world_title, c);
+        setWorldTitle(c);
         
         // Adding playground to game area
-        c.fill = GridBagConstraints.NONE;
-        c.gridx = 1;
+        playground.fillPlayGround();
+        container.add(playground, playground.getPGConstraints());
+        
+        // Add enemy counter
+        EnemyCounter enemy_counter = new EnemyCounter();
+        enemy_counter.startCounter();
+        
+        c.gridx = 3;
         c.gridy = 1;
+        c.gridheight = 10;
+        c.insets = new Insets(0, 20, 0, 0);
+        container.add(enemy_counter, c);
+        
+        // Add life counter
+        LifeCounter life_counter = new LifeCounter();
+        life_counter.startLifeCounter();
+        
+        c.gridy = 12;
+        c.gridheight = 2;
+        c.ipadx = 0;
         c.ipady = 0;
-        playground.setVisible(true);
-        playground.setBackground(Color.BLUE);
-        container.add(playground, c);
+        c.insets = new Insets(50, 20, 0, 0);
+        container.add(life_counter, c);
+        
+        // Add World count
+        JLabel flag = new JLabel(new ImageIcon("resources/blocks/status/flag.png"));
+        
+        c.gridy = 18;
+        c.gridheight = 1;
+        c.ipadx = 0;
+        c.ipady = 0;
+        c.insets = new Insets(60, 20, 0, 0);
+        container.add(flag, c);
+        
+        Label world_num = new Label(String.valueOf(getNumByTitle()));
+        world_num.setHorizontalAlignment(SwingConstants.RIGHT);
+        world_num.setForeground(Color.BLACK);
+        world_num.setFont("resources/fonts/ARCADECLASSIC.ttf", 25.0f);
+        
+        c.gridy = 19;
+        c.gridheight = 1;
+        c.ipadx = 0;
+        c.ipady = 0;
+        c.insets = new Insets(0, 20, 0, 0);
+        container.add(world_num, c);
+        
         container.updateUI();
         
-        // Fill game area with graph descriptor content
-        for(int i = 0; i < graph.graph.size(); ++i) {
-            for(int j = 0; j < graph.graph.get(i).size(); ++j)
-                playground.add(graph.graph.get(i).get(j));
-        }
+        // Start game thread
     }
 }

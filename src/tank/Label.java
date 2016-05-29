@@ -25,39 +25,37 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
  *
  * @author asmateus
- * The GraphDescriptor Class is a utility entity that provides 2 types of Graphs:
- *  A block graph, for holding the elements to be drawn in the PlayGround
- *  A weigh graph, for constructing optimum path in the AI of the Enemies
+ * Class for customizing labels
  * 
  */
-public class GraphDescriptor implements Descriptor
+public class Label extends JLabel
 {
-    public String[][] im = new String[15][17];
-    public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
-            
-    public GraphDescriptor(String[][] input_matrix)
+    public Label(String name)
     {
-        im = input_matrix;
+        super(name);
     }
     
-    @Override
-    public void translate(Object o)
+    public void setFont(String path, float size)
     {
-        BlockDescriptor bck;
-        for(int i = 0; i < 15; ++i) {
-            block_graph.add(new ArrayList<>());
-            for(int j = 0; j < 17; ++j) {
-                bck = new BlockDescriptor();
-                bck.translate(im[i][j]);
-                block_graph.get(i).add(bck);
-            }
+        try {
+            // Font imported from ufonts.com
+            Font fonty = Font.createFont(Font.TRUETYPE_FONT, new File(path));
+            this.setFont(fonty.deriveFont(size));
+        } catch (FontFormatException ex) {
+            Logger.getLogger(GameArea.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GameArea.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

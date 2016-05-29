@@ -25,39 +25,57 @@
  */
 package tank;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
 import java.util.List;
-
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 /**
  *
  * @author asmateus
- * The GraphDescriptor Class is a utility entity that provides 2 types of Graphs:
- *  A block graph, for holding the elements to be drawn in the PlayGround
- *  A weigh graph, for constructing optimum path in the AI of the Enemies
+ * PlayGround class has to update its own elements, for that it counts of tree
+ * different kind of graphs, all provided by GraphDescriptor Class
  * 
  */
-public class GraphDescriptor implements Descriptor
+public class PlayGround extends JPanel 
 {
-    public String[][] im = new String[15][17];
-    public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
-            
-    public GraphDescriptor(String[][] input_matrix)
+    private final GridBagConstraints c = new GridBagConstraints();
+    private final List<List<BlockDescriptor>> block_graph;
+    
+    public PlayGround(GraphDescriptor g_descriptor)
     {
-        im = input_matrix;
+        super(new GridLayout(15, 17));
+        super.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
+        setGBC();
+        
+        super.setVisible(true);
+        
+        // Adding Graphs
+        block_graph = g_descriptor.block_graph;
     }
     
-    @Override
-    public void translate(Object o)
+    private void setGBC()
     {
-        BlockDescriptor bck;
-        for(int i = 0; i < 15; ++i) {
-            block_graph.add(new ArrayList<>());
-            for(int j = 0; j < 17; ++j) {
-                bck = new BlockDescriptor();
-                bck.translate(im[i][j]);
-                block_graph.get(i).add(bck);
-            }
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridheight = 20;
+        c.ipady = 0;
+        c.ipadx = 0;
+    }
+    
+    public GridBagConstraints getPGConstraints()
+    {
+        return c;
+    }
+    
+    public void fillPlayGround()
+    {
+        for(int i = 0; i < block_graph.size(); ++i) {
+            for(int j = 0; j < block_graph.get(i).size(); ++j)
+                this.add(block_graph.get(i).get(j));
         }
     }
 }

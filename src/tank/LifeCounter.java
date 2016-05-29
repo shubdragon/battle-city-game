@@ -25,39 +25,58 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author asmateus
- * The GraphDescriptor Class is a utility entity that provides 2 types of Graphs:
- *  A block graph, for holding the elements to be drawn in the PlayGround
- *  A weigh graph, for constructing optimum path in the AI of the Enemies
- * 
  */
-public class GraphDescriptor implements Descriptor
+public class LifeCounter extends JPanel 
 {
-    public String[][] im = new String[15][17];
-    public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
-            
-    public GraphDescriptor(String[][] input_matrix)
+    private int counter;
+    
+    public LifeCounter()
     {
-        im = input_matrix;
+        super(new GridLayout(2, 2));
+        super.setBackground(Color.GRAY);
     }
     
-    @Override
-    public void translate(Object o)
+    public void startLifeCounter()
     {
-        BlockDescriptor bck;
-        for(int i = 0; i < 15; ++i) {
-            block_graph.add(new ArrayList<>());
-            for(int j = 0; j < 17; ++j) {
-                bck = new BlockDescriptor();
-                bck.translate(im[i][j]);
-                block_graph.get(i).add(bck);
-            }
-        }
+        this.reset();
+        Label cell_1 = new Label("I");
+        cell_1.setForeground(Color.BLACK);
+        cell_1.setFont("resources/fonts/ARCADECLASSIC.ttf", 25.0f);
+        cell_1.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        Label cell_2 = new Label("P");
+        cell_2.setForeground(Color.BLACK);
+        cell_2.setFont("resources/fonts/ARCADECLASSIC.ttf", 25.0f);
+        cell_2.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        Label cell_4 = new Label(String.valueOf(counter));
+        cell_4.setForeground(Color.BLACK);
+        cell_4.setFont("resources/fonts/ARCADECLASSIC.ttf", 25.0f);
+        cell_4.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        this.add(cell_1);
+        this.add(cell_2);
+        this.add(new JLabel(new ImageIcon("resources/blocks/status/life.png")));
+        this.add(cell_4);
+    }
+    
+    private int getLifeCounter()
+    {
+        return 2;
+    }
+    
+    private void reset()
+    {
+        counter = this.getLifeCounter();
     }
 }
