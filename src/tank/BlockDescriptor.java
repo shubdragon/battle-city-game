@@ -41,17 +41,20 @@ import javax.swing.JPanel;
 public class BlockDescriptor extends JPanel implements Descriptor
 {
     private final List<String> imgs;
+    public String code = "";
+    
     public BlockDescriptor()
     {
         super(new GridBagLayout());
+        super.setBackground(Color.BLACK);
         this.imgs = new ArrayList<>();
-        this.setBackground(Color.BLACK);
+        
     }
     
     @Override
     public void translate(Object o)
     {
-        String code = (String) o;
+        code = (String) o;
         GridBagConstraints c = new GridBagConstraints();
         
         // Convert codes to urls

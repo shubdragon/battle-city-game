@@ -91,7 +91,7 @@ public class World
         setWorldTitle(c);
         
         // Adding playground to game area
-        playground.fillPlayGround();
+        playground.startPG();
         container.add(playground, playground.getPGConstraints());
         
         // Add enemy counter

@@ -26,36 +26,72 @@
 package tank;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author asmateus
  * PlayGround class has to update its own elements, for that it counts of tree
- * different kind of graphs, all provided by GraphDescriptor Class
- * 
+ * different kind of graphs, all provided by GraphDescriptor Class.
+ * PlayGround contains the following types of elements:
+ *  + Semi static elements such as bricks, steel, iron, eagle, flags and forest,
+ *    this elements are painted last so that they will be on top, and they have a
+ *    GridLayout layout.
+ *  + Static elements such as void paths, water and bedrock are painted first so
+ *    that they be on the bottom.
+ *  + Dynamic elements such as bullets, tanks, gifts, tanks_information, explosions, 
+ *    kill points, etc. are drawn in the middle, so that they be on top of static
+ *    elements and bellow the semi static ones.
+ * Layout structure:
+ *  JLayeredPane
+ *  | Layer 1: JPanel -> GridLayout, non opaque
+ *  | Layer 2: JPanel -> Null, non opaque
+ *  | Layer 3: JPanel -> GridLayout, non opaque
  */
-public class PlayGround extends JPanel 
+
+public class PlayGround extends JLayeredPane
 {
-    private final GridBagConstraints c = new GridBagConstraints();
-    private final List<List<BlockDescriptor>> block_graph;
+    private final JPanel paths;
+    private final JPanel blocks;
+    private final JPanel toys;
     
-    public PlayGround(GraphDescriptor g_descriptor)
+    private final GridBagConstraints c = new GridBagConstraints();
+    private final List<List<BlockDescriptor>> bg;
+    
+    public PlayGround(GraphDescriptor gd)
     {
-        super(new GridLayout(15, 17));
         super.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
-        setGBC();
+        super.setPreferredSize(new Dimension(552,488));
+        
+        paths = new JPanel(new GridLayout(15, 17));
+        blocks = new JPanel(new GridLayout(15, 17));
+        toys = new JPanel();
+        
+        // Manually set bounds
+        this.setBound();
+        
+        this.bg = gd.block_graph;
+        
+        this.setGBC();
+        this.fillPlayGround();
         
         super.setVisible(true);
-        
-        // Adding Graphs
-        block_graph = g_descriptor.block_graph;
     }
     
+    private void setBound()
+    {
+        paths.setBounds(4, 4, 544, 480);
+        blocks.setBounds(4, 4, 544, 480);
+        toys.setBounds(4, 4, 544, 480);
+    }
+    
+    // GridBagConstraints of PlayGround for setting it in GameArea.
     private void setGBC()
     {
         c.fill = GridBagConstraints.NONE;
@@ -66,16 +102,23 @@ public class PlayGround extends JPanel
         c.ipadx = 0;
     }
     
+    private void fillPlayGround()
+    {
+        // block graph will divide its elements in blocks and paths containers
+        for(int i = 0; i < bg.size(); ++i) {
+            for(int j = 0; j < bg.get(i).size(); ++j)
+                blocks.add(bg.get(i).get(j));
+        }
+    }
+    
     public GridBagConstraints getPGConstraints()
     {
         return c;
     }
     
-    public void fillPlayGround()
-    {
-        for(int i = 0; i < block_graph.size(); ++i) {
-            for(int j = 0; j < block_graph.get(i).size(); ++j)
-                this.add(block_graph.get(i).get(j));
-        }
+    public void startPG()
+    {        
+        this.add(blocks, new Integer(0));
+        
     }
 }
