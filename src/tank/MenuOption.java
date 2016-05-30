@@ -27,15 +27,11 @@ package tank;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.KeyStroke;
 
 /**
  *
@@ -45,61 +41,12 @@ import javax.swing.KeyStroke;
 public class MenuOption extends JLabel 
 {
     private String font_path = "";
-    private final MenuOptionAction action;
     
-    // Possibly this is not good practice, but it is a really small class
-    // that will not be used elsewhere and is intuitive for it to be here.
-    private class MenuOptionAction extends AbstractAction
-    {
-        private final String name;
-        private final GameArea area;
-        
-        private final GameManager game_manager;
-        
-        private final int SINGLE_PLAYER = 0;
-        private final int MULTIPLAYER = 1;
-        
-        public MenuOptionAction(String name, GameArea area)
-        {
-            this.name = name;
-            this.area = area;
-            this.game_manager = new GameManager(area);
-        }
-        
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            // It is not good to switch using the name of the labels
-            switch(name) {
-                case "Single   player":
-                    game_manager.setGameMode(SINGLE_PLAYER);
-                    game_manager.startGameSession();
-                    break;
-                case "Multiplayer":
-                    game_manager.setGameMode(MULTIPLAYER);
-                    game_manager.startGameSession();
-                    break;
-                case "Construction":
-                    System.out.println("Entering Construction");
-                    break;
-                case "Statistics":
-                    System.out.println("Entering Statistics");
-                    break;
-            }
-        }
-    }
+    public MenuOption next_menu;
     
     public MenuOption(String name, GameArea area)
     {
         super(name);
-        this.action = new MenuOptionAction(name, area);
-        keybind();
-    }
-    
-    private void keybind()
-    {
-        this.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "pressed");
-        this.getActionMap().put("pressed", action);
     }
     
     public void formatFont(String path, float size)

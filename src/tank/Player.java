@@ -58,7 +58,7 @@ public class Player
     public void notifyTanks(int order)
     {
         tanks.stream().forEach((t) -> {
-            t.playerIssuedOrder(order);
+            t.masterIssuedOrder(order);
         });
     }
     

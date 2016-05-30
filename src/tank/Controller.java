@@ -31,5 +31,5 @@ package tank;
  */
 public interface Controller
 {
-    void playerIssuedOrder(int code);
+    void masterIssuedOrder(int code);
 }

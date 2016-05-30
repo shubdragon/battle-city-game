@@ -25,13 +25,69 @@
  */
 package tank;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComponent;
+
 /**
  *
  * @author asmateus
  * This Linker class creates event-listeners that will trigger different kind
  * of actions.
  */
-public class Linker 
+public class Linker extends JComponent implements KeyListener
 {
+    private final GameArea container;
+    private final List<Element> subscribers;
     
+    public Linker(GameArea container)
+    {
+        this.container = container;
+        this.subscribers = new ArrayList<>();
+    }
+    
+    public void addSubscriber(Element subscriber)
+    {
+        this.subscribers.add(subscriber);
+    }
+    
+    public void removeSubscriber(Element subscriber)
+    {
+        this.subscribers.remove(subscriber);
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent e) 
+    {
+        subscribers.stream().forEach((subscriber) -> {
+            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
+                if(code == 1000 + e.getKeyCode())
+                    subscriber.masterIssuedOrder(1000 + e.getKeyCode());
+            });
+        });
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e) 
+    {
+        subscribers.stream().forEach((subscriber) -> {
+            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
+                if(code == 2000 + e.getKeyCode())
+                    subscriber.masterIssuedOrder(2000 + e.getKeyCode());
+            });
+        });
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) 
+    {
+        subscribers.stream().forEach((subscriber) -> {
+            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
+                if(code == 3000 + e.getKeyCode())
+                    subscriber.masterIssuedOrder(3000 + e.getKeyCode());
+            });
+        });
+    }
 }

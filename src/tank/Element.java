@@ -25,13 +25,14 @@
  */
 package tank;
 
-import javax.swing.JLabel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author asmateus
  */
-public abstract class Toy
+public abstract class Element implements Controller
 {
-    public JLabel component = new JLabel();
+    public List<Integer> RESPONSE_CODES = new ArrayList<>();
 }

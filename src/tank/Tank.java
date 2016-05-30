@@ -58,7 +58,7 @@ public class Tank implements Controller
     }
     
     @Override
-    public void playerIssuedOrder(int order)
+    public void masterIssuedOrder(int order)
     {
         if(player.party == Player.LOCAL)
             switch(order) {

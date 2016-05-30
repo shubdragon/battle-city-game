@@ -27,13 +27,14 @@ package tank;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.event.KeyEvent;
 import javax.swing.SwingConstants;
 
 /**
  *
  * @author asmateus
  */
-public class Menu 
+public class Menu extends Element 
 {
     private final GameArea container;
     private final GridBagConstraints constraints = new GridBagConstraints();
@@ -45,26 +46,75 @@ public class Menu
     private final MenuOption menu_construction;
     private final MenuOption menu_statistics;
     
+    private MenuOption current_menu;
+    
     public Menu(GameArea container)
     {
         this.container = container;
+        
         menu_title = new MenuOption("BATTLE CITY", container);
         menu_single_player = new MenuOption("Single   player", container);
         menu_multi_player = new MenuOption("Multiplayer", container);
         menu_construction = new MenuOption("Construction", container);
         menu_statistics = new MenuOption("Statistics", container);
+        
         load();
-        MenuEventHandler evh = new MenuEventHandler(container);
-        setFocusScheme(evh);
+        current_menu = menu_single_player;
+        simulateFocusGain();
+
+        // Subscribe Menu to the Linker
+        configureCodes();
+        configureLinker();
+    }
+    
+    private void configureCodes()
+    {
+        super.RESPONSE_CODES.add(3000 + KeyEvent.VK_ENTER);
+        super.RESPONSE_CODES.add(2000 + KeyEvent.VK_DOWN);
+    }
+    
+    private void configureLinker()
+    {
+        this.container.getLinker().addSubscriber(this);
+    }
+    
+    @Override
+    public void masterIssuedOrder(int order)
+    {
+        if(order > 1999 && order < 3000) {
+            order -= 2000;
+            if(order == KeyEvent.VK_DOWN) {
+                this.simulationFocusLost();
+                this.current_menu = this.current_menu.next_menu;
+                this.simulateFocusGain();
+            }
+        }
+        if(order > 2999) {
+            order -= 3000;
+            if(order == KeyEvent.VK_ENTER) {
+                if(this.current_menu.getText().equals("Single   player")) {
+                    System.out.println("Entering single player");
+                }
+            }
+        }
+    }
+    
+    private void simulateFocusGain()
+    {
+        this.current_menu.formatFont(30.0f);
+    }
+    
+    private void simulationFocusLost()
+    {
+        this.current_menu.formatFont(24.0f);
     }
     
     private void load()
     {   
-        menu_title.setFocusable(false);
-        menu_single_player.setFocusable(true);
-        menu_multi_player.setFocusable(true);
-        menu_construction.setFocusable(true);
-        menu_statistics.setFocusable(true);
+        menu_single_player.next_menu = menu_multi_player;
+        menu_multi_player.next_menu = menu_construction;
+        menu_construction.next_menu = menu_statistics;
+        menu_statistics.next_menu = menu_single_player;
         
         // Game title settings
         menu_title.formatFont("resources/fonts/ufonts.com_m10-battle-cities.ttf", 64.0f);
@@ -115,16 +165,5 @@ public class Menu
         constraints.gridy = 4;
         
         container.add(menu_statistics, constraints);
-    }
-    
-    private void setFocusScheme(MenuEventHandler evh)
-    {
-       // Define focus sequence
-       menu_single_player.requestFocusInWindow();
-        
-       menu_single_player.addFocusListener(evh); 
-       menu_multi_player.addFocusListener(evh);
-       menu_construction.addFocusListener(evh);
-       menu_statistics.addFocusListener(evh);
     }
 }
