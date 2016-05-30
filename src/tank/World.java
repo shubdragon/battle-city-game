@@ -60,7 +60,7 @@ public class World
         
         this.container = container;
         this.graph = graph;
-        this.playground = new PlayGround(this.graph);
+        this.playground = new PlayGround(this.graph, container);
     }
     
     private void setWorldTitle(GridBagConstraints c)

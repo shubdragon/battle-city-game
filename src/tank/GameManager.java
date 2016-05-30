@@ -105,7 +105,9 @@ public class GameManager
     
     private void resetGameArea()
     {
+        area.requestFocus();
         area.removeAll();
+        this.area.resetKeyboardActions();
         area.setBackground(Color.GRAY);
         area.repaint();
     }

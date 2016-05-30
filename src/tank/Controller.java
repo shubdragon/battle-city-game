@@ -29,6 +29,7 @@ package tank;
  *
  * @author asmateus
  */
-public class TimeLIne {
-    
+public interface Controller
+{
+    void playerIssuedOrder(int code);
 }

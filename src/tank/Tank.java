@@ -25,11 +25,99 @@
  */
 package tank;
 
+import java.awt.Point;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author asmateus
+ * 
+ * The Tanks are part of the elements of the player, so it needs to listen to it 
+ * via Controller interface.
+ * 
  */
-public class Tank 
+public class Tank implements Controller
 {
+    public final static int NONE  = 0;
+    public final static int UP    = 1;
+    public final static int DOWN  = 2;
+    public final static int RIGHT = 3;
+    public final static int LEFT  = 4;
+    public final static int DELTA = 1;
+    
+    public boolean repainted = false;
+    public Point position = new Point();
+    
+    private final Player player;
+    private ImageIcon image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
+    private int orientation = 0;
+    
+    public Tank(Player player)
+    {
+        this.player = player;
+    }
+    
+    @Override
+    public void playerIssuedOrder(int order)
+    {
+        if(player.party == Player.LOCAL)
+            switch(order) {
+                case 1:
+                    move(Tank.UP);
+                    break;
+                case 2:
+                    move(Tank.DOWN);
+                    break;
+                case 3:
+                    move(Tank.RIGHT);
+                    break;
+                case 4:
+                    move(Tank.LEFT);
+                    break;
+                    
+            }
+    }
+    
+    public ImageIcon getImageIcon()
+    {
+        return this.image;
+    }
+    
+    private void move(int direction) 
+    {
+        this.repainted = false;
+        switch(direction) {
+            case Tank.NONE:
+                break;
+            case Tank.UP:
+                if(orientation != direction) {
+                    orientation = direction;
+                    image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
+                }
+                position.y -= Tank.DELTA;
+                break;
+            case Tank.DOWN:
+                if(orientation != direction) {
+                    orientation = direction;
+                    image = new ImageIcon("resources/blocks/tanks/tank_player1_down.png");
+                }
+                position.y += Tank.DELTA;
+                break;
+            case Tank.RIGHT:
+                if(orientation != direction) {
+                    orientation = direction;
+                    image = new ImageIcon("resources/blocks/tanks/tank_player1_right.png");
+                }
+                position.x += Tank.DELTA;
+                break;
+            case Tank.LEFT:
+                if(orientation != direction) {
+                    orientation = direction;
+                    image = new ImageIcon("resources/blocks/tanks/tank_player1_left.png");
+                }
+                position.x -= Tank.DELTA;
+                break;
+        }
+    }
     
 }

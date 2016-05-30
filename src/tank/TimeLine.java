@@ -25,60 +25,10 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author asmateus
- * The player has Tanks, one or many (if player is an AI). The Tanks need to subscribe to 
- * the player to get feedback events
- * 
  */
-public class Player
-{
-    private String name = "local";
-    private final List<Tank> tanks;
-    public int party;
+public class TimeLine {
     
-    // local player code
-    public static final int LOCAL = 1000;
-    
-    public Player(int party)
-    {
-        tanks = new ArrayList<>();
-        this.party = party;
-    }
-    
-    public void subscribeTank(Tank tank)
-    {
-        tanks.add(tank);
-    }
-    
-    public void notifyTanks(int order)
-    {
-        tanks.stream().forEach((t) -> {
-            t.playerIssuedOrder(order);
-        });
-    }
-    
-    public void setParty(int party)
-    {
-        this.party = party;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public List<Tank> getTanks()
-    {
-        return this.tanks;
-    }
-    
-    public void setName(String name)
-    {
-        this.name = name;
-    }
 }

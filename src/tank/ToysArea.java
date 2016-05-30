@@ -25,35 +25,107 @@
  */
 package tank;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
  *
  * @author asmateus
  */
-public class ToysArea extends JPanel
+public class ToysArea extends JPanel implements KeyListener
 {   
-    List<Toy> toys = new ArrayList<>();
+    List<Player> players = new ArrayList<>();
+    Player local = new Player(Player.LOCAL);
+    Tank tanky;
     
     public ToysArea(int width, int height)
     {
         super.setSize(width, height);
     }
     
-    public void addToys() {
-        for(int i = 0; i < toys.size(); ++i)
-            this.add(toys.get(i).component);
+    public void addPlayer(Player p)
+    {
+        players.add(p);
+        
+        //Tank player_tank = new Tank(p);
+        //player_tank.position = new Point(192, 445);
+        tanky = new Tank(local);
+        tanky.position = new Point(192, 445);
+        //p.subscribeTank(player_tank);
+        local.subscribeTank(tanky);
+        
+        //if(p.party == Player.LOCAL) {
+        //    System.out.println("Hello, i am local");
+        //    this.addKeyListener(keyEvents(p));
+        //}
     }
     
     @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon("resources/blocks/tanks/tank_player1_up.png").getImage(), 192, 445, null);
+        
+        // Repaint Tanks
+        //for(int i = 0; i < players.size(); ++i)
+        //    for(int j = 0; j < players.get(i).getTanks().size(); ++i)
+        //        if(players.get(i).getTanks().get(j).repainted == false) {
+        //            players.get(i).getTanks().get(j).repainted = true;
+        //            g.drawImage(players.get(i).getTanks().get(j).getImageIcon().getImage(),
+        //                players.get(i).getTanks().get(j).position.x, 
+        //                players.get(i).getTanks().get(j).position.y, null);
+        //        }
+        //g.drawImage(new ImageIcon("resources/blocks/tanks/tank_player1_up.png").getImage(), 192, 445, null);
+        g.drawImage(tanky.getImageIcon().getImage(), tanky.position.x, tanky.position.y, null);
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent ev)
+    {
+        switch(ev.getKeyCode()) {
+            case KeyEvent.VK_S:
+                local.notifyTanks(Tank.DOWN);
+                break;
+            case KeyEvent.VK_W:
+                local.notifyTanks(Tank.UP);
+                break;
+            case KeyEvent.VK_A:
+                local.notifyTanks(Tank.LEFT);
+                break;
+            case KeyEvent.VK_D:
+                local.notifyTanks(Tank.RIGHT);
+                break;
+        }
+        repaint();
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent ev)
+    {
+        switch(ev.getKeyCode()) {
+            case KeyEvent.VK_S:
+                local.notifyTanks(Tank.NONE);
+                break;
+            case KeyEvent.VK_W:
+                local.notifyTanks(Tank.NONE);
+                break;
+            case KeyEvent.VK_A:
+                local.notifyTanks(Tank.NONE);
+                break;
+            case KeyEvent.VK_D:
+                local.notifyTanks(Tank.NONE);
+                break;
+        }
+        repaint();
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent ev)
+    {
+             
     }
 }

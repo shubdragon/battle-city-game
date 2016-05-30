@@ -29,10 +29,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -62,14 +61,17 @@ public class PlayGround extends JLayeredPane
     private final JPanel paths;
     private final JPanel blocks;
     private final ToysArea toys;
+    private final GameArea container;
     
     private final GridBagConstraints c = new GridBagConstraints();
     private final List<List<BlockDescriptor>> bg;
     
-    public PlayGround(GraphDescriptor gd)
+    public PlayGround(GraphDescriptor gd, GameArea container)
     {
         super.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
         super.setPreferredSize(new Dimension(552,488));
+        
+        this.container = container;
         
         paths = new JPanel(new GridLayout(15, 17));
         blocks = new JPanel(new GridLayout(15, 17));
@@ -124,10 +126,20 @@ public class PlayGround extends JLayeredPane
     
     public void startPG()
     {        
+        
+        toys.addPlayer(new Player(Player.LOCAL));
+        toys.addKeyListener(toys);
+        toys.setFocusable(true);
+        
         this.add(blocks, new Integer(1));
         this.add(toys, new Integer(2));
         this.add(paths, new Integer(0));
         
-        toys.repaint();
+        this.setFocusable(true);
+        this.requestFocus();
+        toys.grabFocus();
+        toys.requestFocusInWindow();
+        System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+        //container.repaint();
     }
 }
