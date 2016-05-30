@@ -27,8 +27,6 @@ package tank;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -37,10 +35,10 @@ import javax.swing.JPanel;
  *
  * @author asmateus
  */
-public class ToysArea extends JPanel implements KeyListener
+public class ToysArea extends JPanel
 {   
     List<Player> players = new ArrayList<>();
-    Player local = new Player(Player.LOCAL);
+    Player local = null;
     Tank tanky;
     
     public ToysArea(int width, int height)
@@ -51,7 +49,7 @@ public class ToysArea extends JPanel implements KeyListener
     public void addPlayer(Player p)
     {
         players.add(p);
-        
+        local = p;
         //Tank player_tank = new Tank(p);
         //player_tank.position = new Point(192, 445);
         tanky = new Tank(local);
@@ -82,7 +80,7 @@ public class ToysArea extends JPanel implements KeyListener
         //g.drawImage(new ImageIcon("resources/blocks/tanks/tank_player1_up.png").getImage(), 192, 445, null);
         g.drawImage(tanky.getImageIcon().getImage(), tanky.position.x, tanky.position.y, null);
     }
-    
+    /*
     @Override
     public void keyPressed(KeyEvent ev)
     {
@@ -127,5 +125,5 @@ public class ToysArea extends JPanel implements KeyListener
     public void keyTyped(KeyEvent ev)
     {
              
-    }
+    }*/
 }

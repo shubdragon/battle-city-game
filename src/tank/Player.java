@@ -25,6 +25,7 @@
  */
 package tank;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +36,11 @@ import java.util.List;
  * the player to get feedback events
  * 
  */
-public class Player
+public class Player extends Element
 {
     private String name = "local";
     private final List<Tank> tanks;
+    private ToysArea toys_area = null;
     public int party;
     
     // local player code
@@ -48,6 +50,22 @@ public class Player
     {
         tanks = new ArrayList<>();
         this.party = party;
+        
+        // add Codes for linker
+        addCodes();
+    }
+    
+    private void addCodes()
+    {
+        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_UP);
+        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_DOWN);
+        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_LEFT);
+        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_RIGHT);
+    }
+    
+    public void addToysArea(ToysArea toys)
+    {
+        this.toys_area = toys;
     }
     
     public void subscribeTank(Tank tank)
@@ -55,11 +73,18 @@ public class Player
         tanks.add(tank);
     }
     
-    public void notifyTanks(int order)
+    @Override
+    public void masterIssuedOrder (int order)
     {
-        tanks.stream().forEach((t) -> {
-            t.masterIssuedOrder(order);
-        });
+        if(order > 1999 && order < 3000) {
+            order -= 2000;
+            if(order == KeyEvent.VK_UP || order == KeyEvent.VK_DOWN || order == KeyEvent.VK_LEFT ||
+                order == KeyEvent.VK_RIGHT) {
+                for(int i = 0; i < this.tanks.size(); ++i)
+                    this.tanks.get(i).masterIssuedOrder(order);
+                this.toys_area.repaint();
+            }
+        }
     }
     
     public void setParty(int party)

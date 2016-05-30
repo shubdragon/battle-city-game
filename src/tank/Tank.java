@@ -26,6 +26,7 @@
 package tank;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 /**
@@ -62,16 +63,16 @@ public class Tank implements Controller
     {
         if(player.party == Player.LOCAL)
             switch(order) {
-                case 1:
+                case KeyEvent.VK_UP:
                     move(Tank.UP);
                     break;
-                case 2:
+                case KeyEvent.VK_DOWN:
                     move(Tank.DOWN);
                     break;
-                case 3:
+                case KeyEvent.VK_RIGHT:
                     move(Tank.RIGHT);
                     break;
-                case 4:
+                case KeyEvent.VK_LEFT:
                     move(Tank.LEFT);
                     break;
                     

@@ -126,19 +126,15 @@ public class PlayGround extends JLayeredPane
     
     public void startPG()
     {        
-        
-        toys.addPlayer(new Player(Player.LOCAL));
-        toys.addKeyListener(toys);
-        toys.setFocusable(true);
+        Player local = new Player(Player.LOCAL);
+        local.addToysArea(toys);
+        toys.addPlayer(local);
+        container.getLinker().addSubscriber(local);
         
         this.add(blocks, new Integer(1));
         this.add(toys, new Integer(2));
         this.add(paths, new Integer(0));
         
-        this.setFocusable(true);
-        this.requestFocus();
-        toys.grabFocus();
-        toys.requestFocusInWindow();
         System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
         //container.repaint();
     }

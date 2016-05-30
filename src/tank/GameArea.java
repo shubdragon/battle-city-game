@@ -27,7 +27,6 @@ package tank;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.awt.KeyboardFocusManager;
 import javax.swing.JPanel;
 
 /**
@@ -43,13 +42,7 @@ public class GameArea extends JPanel
     public GameArea(GridBagLayout layout)
     {
         super(layout);
-        linker = new Linker(this);
-        this.add(linker);
-        
-        linker.setFocusable(true);
-        linker.requestFocusInWindow();
-        linker.addKeyListener(linker);
-        
+        addLinker();
         //System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
         
         setDefaultConfig();
@@ -59,6 +52,16 @@ public class GameArea extends JPanel
     {
         this.setBackground(Color.BLACK); 
         
+    }
+    
+    public void addLinker()
+    {
+        linker = new Linker(this);
+        this.add(linker);
+        
+        linker.setFocusable(true);
+        linker.requestFocusInWindow();
+        linker.addKeyListener(linker);
     }
     
     public Linker getLinker()

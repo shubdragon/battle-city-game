@@ -93,8 +93,17 @@ public class Menu extends Element
             order -= 3000;
             if(order == KeyEvent.VK_ENTER) {
                 if(this.current_menu.getText().equals("Single   player")) {
-                    System.out.println("Removing subscriber");
                     this.container.getLinker().removeSubscriber(this);
+                    Thread thread = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                GameManager manager = new GameManager(container);
+                                manager.startGameSession();
+                            }
+                        });
+                    thread.start();
                 }
             }
         }
