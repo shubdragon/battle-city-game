@@ -28,6 +28,7 @@ package tank;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JComponent;
 
@@ -41,6 +42,7 @@ public class Linker extends JComponent implements KeyListener
 {
     private final GameArea container;
     private final List<Element> subscribers;
+    private final List<Element> unsubscribed  = new ArrayList<>();
     
     public Linker(GameArea container)
     {
@@ -55,7 +57,14 @@ public class Linker extends JComponent implements KeyListener
     
     public void removeSubscriber(Element subscriber)
     {
-        this.subscribers.remove(subscriber);
+        this.unsubscribed.add(subscriber);
+    }
+    
+    private void refactorSubscribers()
+    {
+        this.unsubscribed.stream().forEach((subs) -> {
+            this.subscribers.remove(subs);
+        });
     }
     
     @Override
@@ -83,11 +92,17 @@ public class Linker extends JComponent implements KeyListener
     @Override
     public void keyReleased(KeyEvent e) 
     {
-        subscribers.stream().forEach((subscriber) -> {
-            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
+        Iterator<Element> iter = subscribers.iterator();
+        while(iter.hasNext()) {
+            Element elem = iter.next();
+            elem.RESPONSE_CODES.stream().forEach((code) -> {
                 if(code == 3000 + e.getKeyCode())
-                    subscriber.masterIssuedOrder(3000 + e.getKeyCode());
+                    elem.masterIssuedOrder(3000 + e.getKeyCode());
             });
-        });
+        }
+        if(!this.unsubscribed.isEmpty()) {
+            this.refactorSubscribers();
+            this.unsubscribed.clear();
+        }
     }
 }
