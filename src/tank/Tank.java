@@ -44,7 +44,7 @@ public class Tank implements Controller
     public final static int DOWN  = 2;
     public final static int RIGHT = 3;
     public final static int LEFT  = 4;
-    public final static int DELTA = 1;
+    public final static int DELTA = 2;
     
     public boolean repainted = false;
     public Point position = new Point();

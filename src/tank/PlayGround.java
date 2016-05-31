@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -58,7 +59,7 @@ import javax.swing.JPanel;
 
 public class PlayGround extends JLayeredPane
 {
-    private final JPanel paths;
+    private final JPanel forest;
     private final JPanel blocks;
     private final ToysArea toys;
     private final GameArea container;
@@ -73,7 +74,7 @@ public class PlayGround extends JLayeredPane
         
         this.container = container;
         
-        paths = new JPanel(new GridLayout(15, 17));
+        forest = new JPanel(new GridLayout(15, 17));
         blocks = new JPanel(new GridLayout(15, 17));
         toys = new ToysArea(544, 480);
         
@@ -90,11 +91,11 @@ public class PlayGround extends JLayeredPane
     
     private void setPGElements()
     {
-        paths.setBounds(4, 4, 544, 480);
+        forest.setBounds(4, 4, 544, 480);
         blocks.setBounds(4, 4, 544, 480);
         toys.setBounds(4, 4, 544, 480);
         
-        paths.setOpaque(false);
+        forest.setOpaque(false);
         blocks.setOpaque(false);
         toys.setOpaque(false);
     }
@@ -114,8 +115,16 @@ public class PlayGround extends JLayeredPane
     {
         // block graph will divide its elements in blocks and paths containers,
         for(int i = 0; i < bg.size(); ++i) {
-            for(int j = 0; j < bg.get(i).size(); ++j)
-                blocks.add(bg.get(i).get(j));
+            for(int j = 0; j < bg.get(i).size(); ++j) {
+                if(bg.get(i).get(j).code.equals("L   ")) {
+                    forest.add(bg.get(i).get(j));
+                    blocks.add(new JLabel());
+                }
+                else {
+                    forest.add(new JLabel());
+                    blocks.add(bg.get(i).get(j));
+                }
+            }
         }
     }
     
@@ -131,9 +140,9 @@ public class PlayGround extends JLayeredPane
         toys.addPlayer(local);
         container.getLinker().addSubscriber(local);
         
-        this.add(blocks, new Integer(1));
-        this.add(toys, new Integer(2));
-        this.add(paths, new Integer(0));
+        this.add(blocks, new Integer(0));
+        this.add(toys, new Integer(1));
+        this.add(forest, new Integer(2));
         
         System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
         //container.repaint();
