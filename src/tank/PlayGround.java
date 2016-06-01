@@ -66,6 +66,7 @@ public class PlayGround extends JLayeredPane
     
     private final GridBagConstraints c = new GridBagConstraints();
     private final List<List<BlockDescriptor>> bg;
+    private final Integer[][] wg;
     
     public PlayGround(GraphDescriptor gd, GameArea container)
     {
@@ -73,15 +74,15 @@ public class PlayGround extends JLayeredPane
         super.setPreferredSize(new Dimension(552,488));
         
         this.container = container;
+        this.bg = gd.block_graph;
+        this.wg = gd.weight_graph;
         
         forest = new JPanel(new GridLayout(15, 17));
         blocks = new JPanel(new GridLayout(15, 17));
-        toys = new ToysArea(544, 480);
+        toys = new ToysArea(544, 480, wg);
         
         // Manually set bounds
         this.setPGElements();
-        
-        this.bg = gd.block_graph;
         
         this.setGBC();
         this.fillPlayGround();

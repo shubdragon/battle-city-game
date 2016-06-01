@@ -34,16 +34,27 @@ import javax.swing.JPanel;
 /**
  *
  * @author asmateus
+ * 
+ * This is the class where dynamic things happens, it can add players and the players
+ * can have elements associated to them (tank, bases, bullets), a player needs to
+ * subscribe its elements to the collision system. The collision system works like this:
+ *  It keeps track of the mobile elements such as tanks and bullets and makes a
+ *  collision prediction in the move method of such elements. And implements the react
+ *  to collision and notifyAffecteds methods.
+ * For collision detection a weighted graph will be used, the tanks will be dynamically added
+ * to this graph based on its position inside the ToysArea.
  */
 public class ToysArea extends JPanel
 {   
     List<Player> players = new ArrayList<>();
+    Integer[][] coll_graph;
     Player local = null;
     Tank tanky;
     
-    public ToysArea(int width, int height)
+    public ToysArea(int width, int height, Integer[][] coll_graph)
     {
         super.setSize(width, height);
+        this.coll_graph = coll_graph;
     }
     
     public void addPlayer(Player p)
@@ -53,14 +64,14 @@ public class ToysArea extends JPanel
         //Tank player_tank = new Tank(p);
         //player_tank.position = new Point(192, 445);
         tanky = new Tank(local);
-        tanky.position = new Point(192, 445);
+        tanky.position = new Point(192, 420);
+        CollisionSystem coll_sys = new CollisionSystem(this.coll_graph);
+        coll_sys.addSubscriber(tanky);
+        tanky.addCollisionSystem(coll_sys);
+        coll_sys.guessSubscriberPosition(tanky);
         //p.subscribeTank(player_tank);
         local.subscribeTank(tanky);
         
-        //if(p.party == Player.LOCAL) {
-        //    System.out.println("Hello, i am local");
-        //    this.addKeyListener(keyEvents(p));
-        //}
     }
     
     @Override
@@ -80,50 +91,4 @@ public class ToysArea extends JPanel
         //g.drawImage(new ImageIcon("resources/blocks/tanks/tank_player1_up.png").getImage(), 192, 445, null);
         g.drawImage(tanky.getImageIcon().getImage(), tanky.position.x, tanky.position.y, null);
     }
-    /*
-    @Override
-    public void keyPressed(KeyEvent ev)
-    {
-        switch(ev.getKeyCode()) {
-            case KeyEvent.VK_S:
-                local.notifyTanks(Tank.DOWN);
-                break;
-            case KeyEvent.VK_W:
-                local.notifyTanks(Tank.UP);
-                break;
-            case KeyEvent.VK_A:
-                local.notifyTanks(Tank.LEFT);
-                break;
-            case KeyEvent.VK_D:
-                local.notifyTanks(Tank.RIGHT);
-                break;
-        }
-        repaint();
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent ev)
-    {
-        switch(ev.getKeyCode()) {
-            case KeyEvent.VK_S:
-                local.notifyTanks(Tank.NONE);
-                break;
-            case KeyEvent.VK_W:
-                local.notifyTanks(Tank.NONE);
-                break;
-            case KeyEvent.VK_A:
-                local.notifyTanks(Tank.NONE);
-                break;
-            case KeyEvent.VK_D:
-                local.notifyTanks(Tank.NONE);
-                break;
-        }
-        repaint();
-    }
-    
-    @Override
-    public void keyTyped(KeyEvent ev)
-    {
-             
-    }*/
 }

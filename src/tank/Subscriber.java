@@ -25,15 +25,14 @@
  */
 package tank;
 
-import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author asmateus
  */
-public abstract class Element 
+public abstract class Subscriber implements Controller
 {
-    public Point position = new Point();
-    public int type = -1;
-    public CollisionSystem coll_sys;
+    public List<Integer> RESPONSE_CODES = new ArrayList<>();
 }

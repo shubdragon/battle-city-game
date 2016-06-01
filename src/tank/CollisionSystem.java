@@ -26,14 +26,58 @@
 package tank;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author asmateus
  */
-public abstract class Element 
+public class CollisionSystem
 {
-    public Point position = new Point();
-    public int type = -1;
-    public CollisionSystem coll_sys;
+    private final Integer[][] matrix;
+    private final List<Element> subscribers = new ArrayList<>();
+    
+    public CollisionSystem(Integer[][] matrix)
+    {
+        this.matrix = matrix;
+    }
+    
+    public void addSubscriber(Element o)
+    {
+        this.subscribers.add(o);
+    }
+    
+    public void removeSubscriber(Element o)
+    {
+        this.subscribers.remove(o);
+    }
+    
+    public Cell[] guessSubscriberPosition(Element o)
+    {
+        Cell[] cell = new Cell[4];
+        cell[0] = getCellFromPos(o.position);
+        cell[1] = new Cell(cell[0].row, cell[0].col + 1);
+        cell[2] = new Cell(cell[0].row + 1, cell[0].col);
+        cell[3] = new Cell(cell[0].row + 1, cell[0].col + 1);
+        
+        return cell;
+    }
+    
+    public boolean predictCollision(Point future_position)
+    {
+        boolean t = false;
+        Cell cell = getCellFromPos(future_position);
+        for(int i = 0; i < 2; ++i)
+            for(int j = 0; j < 2; ++j) {
+                if(this.matrix[cell.row + i][cell.col + j] > 0)
+                    t = true;
+            }
+        return t;
+    }
+    
+    private Cell getCellFromPos(Point p)
+    {
+        return new Cell(((Integer) (p.y + 7)/16) + 2, ((Integer) (p.x + 7)/16) + 2);
+    }
 }

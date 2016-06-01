@@ -41,10 +41,92 @@ public class GraphDescriptor implements Descriptor
 {
     public String[][] im = new String[15][17];
     public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
+    public Integer[][] weight_graph = new Integer[34][38];
             
     public GraphDescriptor(String[][] input_matrix)
     {
         im = input_matrix;
+        initializeWeightGraph();
+    }
+    
+    private void initializeWeightGraph()
+    {
+        for(int i = 0; i < 34; ++i)
+            for(int j = 0; j < 38; ++j)
+                this.weight_graph[i][j] = 0;
+    }
+    
+    private void createWeightGraph()
+    {
+        // Adding normal cells
+        char[] code = new char[4];
+        for(int i = 0, k = 2; i < block_graph.size(); ++i, k += 2) {
+            for(int j = 0, h = 2; j < block_graph.get(i).size(); ++j, h += 2) {
+                code = this.block_graph.get(i).get(j).code.toCharArray();
+                if(Character.isUpperCase(code[0])) {
+                    this.weight_graph[k][h] = weightDecisor(Character.toLowerCase(code[0]));
+                    this.weight_graph[k][h + 1] = weightDecisor(Character.toLowerCase(code[0]));
+                    this.weight_graph[k + 1][h] = weightDecisor(Character.toLowerCase(code[0]));
+                    this.weight_graph[k + 1][h + 1] = weightDecisor(Character.toLowerCase(code[0]));
+                }
+                else {
+                    this.weight_graph[k][h] = weightDecisor(code[0]);
+                    this.weight_graph[k][h + 1] = weightDecisor(code[1]);
+                }
+            }
+            for(int j = 0, h = 2; j < block_graph.get(i).size(); ++j, h += 2) {
+                code = this.block_graph.get(i).get(j).code.toCharArray();
+                if(!Character.isUpperCase(code[0])) {
+                    this.weight_graph[k + 1][h] = weightDecisor(code[2]);
+                    this.weight_graph[k + 1][h + 1] = weightDecisor(code[3]);
+                }
+            }
+        }
+        
+        // Adding bedrock
+        for(int j = 0; j < 38; ++j) {
+            this.weight_graph[0][j] = Integer.MAX_VALUE;
+            this.weight_graph[33][j] = Integer.MAX_VALUE;
+            this.weight_graph[1][j] = Integer.MAX_VALUE;
+            this.weight_graph[32][j] = Integer.MAX_VALUE;
+        }
+        for(int i = 0; i < 34; ++i) {
+            this.weight_graph[i][0] = Integer.MAX_VALUE;
+            this.weight_graph[i][37] = Integer.MAX_VALUE;
+            this.weight_graph[i][1] = Integer.MAX_VALUE;
+            this.weight_graph[i][36] = Integer.MAX_VALUE;
+        }
+        for(int i = 0; i < 34; ++i) {
+            for(int j = 0; j < 38; ++j)
+                System.out.print(this.weight_graph[i][j] + " ");
+            System.out.println("");
+        }
+    }
+    
+    private int weightDecisor(char c)
+    {
+        switch(c) {
+            case 'x':
+                return 2;
+            case 'z':
+                return -2;
+            case 'i':
+                return 1;
+            case 'j':
+                return 5;
+            case 'k':
+                return 4;
+            case 'l':
+                return 0;
+            case 'm':
+                return Integer.MAX_VALUE;        
+            case 'o':
+                return Integer.MAX_VALUE;
+            case 'v':
+                return 0;
+        }
+        
+        return 0;
     }
     
     @Override
@@ -59,5 +141,6 @@ public class GraphDescriptor implements Descriptor
                 block_graph.get(i).add(bck);
             }
         }
+        this.createWeightGraph();
     }
 }

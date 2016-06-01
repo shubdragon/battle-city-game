@@ -34,7 +34,7 @@ import javax.swing.SwingConstants;
  *
  * @author asmateus
  */
-public class Menu extends Element 
+public class Menu extends Subscriber 
 {
     private final GameArea container;
     private final GridBagConstraints constraints = new GridBagConstraints();

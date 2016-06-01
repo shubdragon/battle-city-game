@@ -27,6 +27,8 @@ package tank;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
@@ -37,8 +39,10 @@ import javax.swing.ImageIcon;
  * via Controller interface.
  * 
  */
-public class Tank implements Controller
+public class Tank extends Element implements Controller, Mechanics
 {
+    public final List<List<String>> ubication = new ArrayList();
+    
     public final static int NONE  = 0;
     public final static int UP    = 1;
     public final static int DOWN  = 2;
@@ -47,7 +51,6 @@ public class Tank implements Controller
     public final static int DELTA = 2;
     
     public boolean repainted = false;
-    public Point position = new Point();
     
     private final Player player;
     private ImageIcon image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
@@ -56,6 +59,12 @@ public class Tank implements Controller
     public Tank(Player player)
     {
         this.player = player;
+        this.type = 7;
+    }
+    
+    public void addCollisionSystem(CollisionSystem c)
+    {
+        this.coll_sys = c;
     }
     
     @Override
@@ -84,7 +93,8 @@ public class Tank implements Controller
         return this.image;
     }
     
-    private void move(int direction) 
+    @Override
+    public void move(int direction) 
     {
         this.repainted = false;
         switch(direction) {
@@ -95,30 +105,50 @@ public class Tank implements Controller
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
                 }
-                position.y -= Tank.DELTA;
+                if(!this.coll_sys.predictCollision(new Point(this.position.x, this.position.y - Tank.DELTA))) {
+                    position.y -= Tank.DELTA;
+                }
                 break;
             case Tank.DOWN:
                 if(orientation != direction) {
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_down.png");
                 }
-                position.y += Tank.DELTA;
+                if(!this.coll_sys.predictCollision(new Point(this.position.x, this.position.y + Tank.DELTA))) {
+                    position.y += Tank.DELTA;
+                }
                 break;
             case Tank.RIGHT:
                 if(orientation != direction) {
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_right.png");
                 }
-                position.x += Tank.DELTA;
+                if(!this.coll_sys.predictCollision(new Point(this.position.x  + Tank.DELTA, this.position.y))) {
+                    position.x += Tank.DELTA;
+                }
                 break;
             case Tank.LEFT:
                 if(orientation != direction) {
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_left.png");
                 }
-                position.x -= Tank.DELTA;
+                if(!this.coll_sys.predictCollision(new Point(this.position.x  - Tank.DELTA, this.position.y))) {
+                    position.x -= Tank.DELTA;
+                }
                 break;
         }
+    }
+    
+    @Override
+    public void reactToCollision()
+    {
+        
+    }
+    
+    @Override
+    public void notifyInvolved()
+    {
+        
     }
     
 }

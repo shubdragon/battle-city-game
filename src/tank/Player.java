@@ -36,7 +36,7 @@ import java.util.List;
  * the player to get feedback events
  * 
  */
-public class Player extends Element
+public class Player extends Subscriber
 {
     private String name = "local";
     private final List<Tank> tanks;

@@ -25,15 +25,18 @@
  */
 package tank;
 
-import java.awt.Point;
-
 /**
  *
  * @author asmateus
  */
-public abstract class Element 
+public class Cell 
 {
-    public Point position = new Point();
-    public int type = -1;
-    public CollisionSystem coll_sys;
+    public int row = 0;
+    public int col = 0;
+    
+    public Cell(int row, int col)
+    {
+        this.col = col;
+        this.row = row;
+    }
 }

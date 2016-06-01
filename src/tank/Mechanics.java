@@ -25,15 +25,13 @@
  */
 package tank;
 
-import java.awt.Point;
-
 /**
  *
  * @author asmateus
  */
-public abstract class Element 
+public interface Mechanics
 {
-    public Point position = new Point();
-    public int type = -1;
-    public CollisionSystem coll_sys;
+    public void reactToCollision();
+    public void move(int dir);
+    public void notifyInvolved();
 }

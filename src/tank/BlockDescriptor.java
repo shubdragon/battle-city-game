@@ -42,6 +42,7 @@ public class BlockDescriptor extends JPanel implements Descriptor
 {
     private final List<String> imgs;
     public String code = "";
+    public int block_weight = 0;
     
     public BlockDescriptor()
     {
@@ -103,52 +104,68 @@ public class BlockDescriptor extends JPanel implements Descriptor
         switch(code) {
             case 'I':
                 uri += "brick.png";
+                this.block_weight = 4;
                 break;
             case 'J':
                 uri += "steel.png";
+                this.block_weight = 400;
                 break;
             case 'K':
                 uri += "iron.png";
+                this.block_weight = 300;
                 break;
             case 'L':
                 uri += "forest.png";
+                this.block_weight = 0;
                 break;
             case 'M':
                 uri += "sea.png";
+                this.block_weight = Integer.MAX_VALUE;
                 break;
             case 'O':
                 uri += "deepsea.png";
+                this.block_weight = Integer.MAX_VALUE;
                 break;
             case 'V':
                 uri += "void.png";
+                this.block_weight = 0;
                 break;
             case 'X':
                 uri += "eagle.png";
+                this.block_weight = 1;
                 break;
             case 'Z':
                 uri += "deadflag.png";
+                this.block_weight = Integer.MAX_VALUE;
                 break;
             
             case 'i':
                 uri += "small_brick.png";
+                this.block_weight += 1;
                 break;
             case 'j':
                 uri += "small_steel.png";
+                this.block_weight += 100;
                 break;
             case 'k':
                 uri += "small_iron.png";
+                this.block_weight += 75;
                 break;
             case 'l':
                 uri += "small_forest.png";
+                this.block_weight += 0;
                 break;
             case 'm':
                 uri += "small_sea.png";
+                this.block_weight = Integer.MAX_VALUE;
                 break;
             case 'o':
                 uri += "small_deepsea.png";
+                this.block_weight = Integer.MAX_VALUE;
                 break;
             case 'v':
                 uri += "small_void.png";
+                this.block_weight += 0;
                 break;
                 
             default:

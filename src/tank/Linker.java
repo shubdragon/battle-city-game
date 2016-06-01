@@ -41,8 +41,8 @@ import javax.swing.JComponent;
 public class Linker extends JComponent implements KeyListener
 {
     private final GameArea container;
-    private final List<Element> subscribers;
-    private final List<Element> unsubscribed  = new ArrayList<>();
+    private final List<Subscriber> subscribers;
+    private final List<Subscriber> unsubscribed  = new ArrayList<>();
     
     public Linker(GameArea container)
     {
@@ -50,12 +50,12 @@ public class Linker extends JComponent implements KeyListener
         this.subscribers = new ArrayList<>();
     }
     
-    public void addSubscriber(Element subscriber)
+    public void addSubscriber(Subscriber subscriber)
     {
         this.subscribers.add(subscriber);
     }
     
-    public void removeSubscriber(Element subscriber)
+    public void removeSubscriber(Subscriber subscriber)
     {
         this.unsubscribed.add(subscriber);
     }
@@ -93,9 +93,9 @@ public class Linker extends JComponent implements KeyListener
     @Override
     public void keyReleased(KeyEvent e) 
     {
-        Iterator<Element> iter = subscribers.iterator();
+        Iterator<Subscriber> iter = subscribers.iterator();
         while(iter.hasNext()) {
-            Element elem = iter.next();
+            Subscriber elem = iter.next();
             elem.RESPONSE_CODES.stream().forEach((code) -> {
                 if(code == 3000 + e.getKeyCode())
                     elem.masterIssuedOrder(3000 + e.getKeyCode());
