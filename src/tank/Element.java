@@ -36,4 +36,7 @@ public abstract class Element
     public Point position = new Point();
     public int type = -1;
     public CollisionSystem coll_sys;
+    public int orientation = 0;
+    
+    public abstract void move(int direction);
 }

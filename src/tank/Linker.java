@@ -30,6 +30,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 
 /**
@@ -43,11 +45,39 @@ public class Linker extends JComponent implements KeyListener
     private final GameArea container;
     private final List<Subscriber> subscribers;
     private final List<Subscriber> unsubscribed  = new ArrayList<>();
+    private final List<Integer> keys = new ArrayList<>();
+    
+    
+    // Return the key events allways
+    Thread thread = new Thread(
+            new Runnable() {
+                @Override
+                public void run()
+                {
+                    while(true) {
+                        subscribers.stream().forEach((subscriber) -> {
+                            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
+                                for(int i = 0; i < keys.size(); ++i) {
+                                    if(code == 2000 + keys.get(i))
+                                        subscriber.masterIssuedOrder(2000 + keys.get(i));
+                                }
+                            });
+                        });
+                        try {
+                            Thread.sleep(20);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Linker.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        );
     
     public Linker(GameArea container)
     {
         this.container = container;
         this.subscribers = new ArrayList<>();
+        thread.start();
     }
     
     public void addSubscriber(Subscriber subscriber)
@@ -67,6 +97,11 @@ public class Linker extends JComponent implements KeyListener
         });
     }
     
+    public void update()
+    {
+        
+    }
+    
     @Override
     public void keyTyped(KeyEvent e) 
     {
@@ -81,18 +116,15 @@ public class Linker extends JComponent implements KeyListener
     @Override
     public void keyPressed(KeyEvent e) 
     {
-        
-        subscribers.stream().forEach((subscriber) -> {
-            subscriber.RESPONSE_CODES.stream().forEach((code) -> {
-                if(code == 2000 + e.getKeyCode())
-                    subscriber.masterIssuedOrder(2000 + e.getKeyCode());
-            });
-        });
+        if(!this.keys.contains(e.getKeyCode())) {
+            this.keys.add(e.getKeyCode());
+        }
     }
     
     @Override
     public void keyReleased(KeyEvent e) 
     {
+        this.keys.remove(this.keys.indexOf(e.getKeyCode()));
         Iterator<Subscriber> iter = subscribers.iterator();
         while(iter.hasNext()) {
             Subscriber elem = iter.next();

@@ -61,6 +61,10 @@ public class Player extends Subscriber
         this.RESPONSE_CODES.add(2000 + KeyEvent.VK_DOWN);
         this.RESPONSE_CODES.add(2000 + KeyEvent.VK_LEFT);
         this.RESPONSE_CODES.add(2000 + KeyEvent.VK_RIGHT);
+        this.RESPONSE_CODES.add(3000 + KeyEvent.VK_UP);
+        this.RESPONSE_CODES.add(3000 + KeyEvent.VK_DOWN);
+        this.RESPONSE_CODES.add(3000 + KeyEvent.VK_LEFT);
+        this.RESPONSE_CODES.add(3000 + KeyEvent.VK_RIGHT);
     }
     
     public void addToysArea(ToysArea toys)
@@ -76,10 +80,10 @@ public class Player extends Subscriber
     @Override
     public void masterIssuedOrder (int order)
     {
-        if(order > 1999 && order < 3000) {
-            order -= 2000;
-            if(order == KeyEvent.VK_UP || order == KeyEvent.VK_DOWN || order == KeyEvent.VK_LEFT ||
-                order == KeyEvent.VK_RIGHT) {
+        if(order > 1999) {
+            if(order == 2000 + KeyEvent.VK_UP || order == 2000 + KeyEvent.VK_DOWN || order == 2000 + KeyEvent.VK_LEFT ||
+                order == 2000 + KeyEvent.VK_RIGHT || order == 3000 + KeyEvent.VK_UP || order == 3000 + KeyEvent.VK_DOWN || 
+                order == 3000 + KeyEvent.VK_LEFT || order == 3000 + KeyEvent.VK_RIGHT) {
                 for(int i = 0; i < this.tanks.size(); ++i)
                     this.tanks.get(i).masterIssuedOrder(order);
                 this.toys_area.repaint();

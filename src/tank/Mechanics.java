@@ -32,6 +32,5 @@ package tank;
 public interface Mechanics
 {
     public void reactToCollision();
-    public void move(int dir);
     public void notifyInvolved();
 }

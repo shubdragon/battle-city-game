@@ -25,59 +25,28 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.KeyEvent;
 
 /**
  *
  * @author asmateus
- * This class is a repainter that will update the position of all the elements
- * that needs to be updated
  */
-public class TimeLine extends Thread
+public class SubscriberThread extends Subscriber 
 {
-    private final List<Element> elements = new ArrayList<>();
-    private final List<Integer> directions = new ArrayList<>();
-    
-    public TimeLine()
+    public SubscriberThread()
     {
-        
-    }
-    
-    public void addElement(Element e, int direction)
-    {
-        System.out.println("Someone added an element");
-        this.elements.add(e);
-        this.directions.add(direction);
-    }
-    
-    public synchronized void removeElement(Element e)
-    {
-        System.out.println("Someone removed an element");
-        this.directions.remove(this.elements.indexOf(e));
-        this.elements.remove(e);
+        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_SPACE);
     }
     
     @Override
-    public void run()
+    public void masterIssuedOrder(int order)
     {
-        while(true) {
-            //update();
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(TimeLine.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    public void update()
-    {
-        //System.out.println(this.elements);
-        for(int i = 0; i < this.elements.size(); ++i) {
-            //this.elements.get(i).move(/*this.directions.get(i)*/);
+        order -= 2000;
+        switch(order)
+        {
+            case KeyEvent.VK_SPACE:
+                System.out.println("A bullet was shooted");
+                break;
         }
     }
 }

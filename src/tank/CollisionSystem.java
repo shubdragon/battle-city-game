@@ -73,6 +73,8 @@ public class CollisionSystem
                 if(this.matrix[cell.row + i][cell.col + j] > 0)
                     t = true;
             }
+        if(future_position.x < 0 || future_position.y < 0 || future_position.x > 514 || future_position.y > 450)
+            t = true;
         return t;
     }
     

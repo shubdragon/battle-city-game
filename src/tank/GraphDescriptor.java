@@ -96,11 +96,11 @@ public class GraphDescriptor implements Descriptor
             this.weight_graph[i][1] = Integer.MAX_VALUE;
             this.weight_graph[i][36] = Integer.MAX_VALUE;
         }
-        for(int i = 0; i < 34; ++i) {
+        /*for(int i = 0; i < 34; ++i) {
             for(int j = 0; j < 38; ++j)
                 System.out.print(this.weight_graph[i][j] + " ");
             System.out.println("");
-        }
+        }*/
     }
     
     private int weightDecisor(char c)

@@ -29,6 +29,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
 /**
@@ -50,11 +52,14 @@ public class Tank extends Element implements Controller, Mechanics
     public final static int LEFT  = 4;
     public final static int DELTA = 2;
     
+    private TimeLine game_loop;
+    //private boolean in_timeline = false;
+    //private int direction = 0;
+    
     public boolean repainted = false;
     
     private final Player player;
     private ImageIcon image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
-    private int orientation = 0;
     
     public Tank(Player player)
     {
@@ -67,25 +72,69 @@ public class Tank extends Element implements Controller, Mechanics
         this.coll_sys = c;
     }
     
+    public void addTimeLine(TimeLine gl)
+    {
+        this.game_loop = gl;
+        //this.game_loop.addElement(this, direction);
+    }
+    
     @Override
     public void masterIssuedOrder(int order)
     {
-        if(player.party == Player.LOCAL)
+        //if(!this.in_timeline) {
+            order -= 2000;
             switch(order) {
                 case KeyEvent.VK_UP:
+                    //this.in_timeline = true;
+                    //this.direction = Tank.UP;
+                    //this.game_loop.addElement(this, Tank.UP);
                     move(Tank.UP);
                     break;
                 case KeyEvent.VK_DOWN:
+                    //this.in_timeline = true;
+                    //this.direction = Tank.DOWN;
+                    //this.game_loop.addElement(this, Tank.DOWN);
                     move(Tank.DOWN);
                     break;
                 case KeyEvent.VK_RIGHT:
+                    //this.in_timeline = true;
+                    //this.direction = Tank.RIGHT;
+                    //this.game_loop.addElement(this, Tank.RIGHT);
                     move(Tank.RIGHT);
                     break;
                 case KeyEvent.VK_LEFT:
+                    //this.in_timeline = true;
+                    //this.direction = Tank.LEFT;
+                    //this.game_loop.addElement(this, Tank.LEFT);
                     move(Tank.LEFT);
                     break;
-                    
             }
+        //}
+        //if(this.in_timeline) {
+        /*    order -= 3000;
+            switch(order) {
+                case KeyEvent.VK_UP:
+                    //this.in_timeline = false;
+                    //this.game_loop.removeElement(this);
+                    //stop();
+                    break;
+                case KeyEvent.VK_DOWN:
+                    //this.in_timeline = false;
+                    //this.game_loop.removeElement(this);
+                    //stop();
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    //this.in_timeline = false;
+                    //this.game_loop.removeElement(this);
+                    //stop();
+                    break;
+                case KeyEvent.VK_LEFT:
+                    //this.in_timeline = false;
+                    //this.game_loop.removeElement(this);
+                    //stop();
+                    break;
+            }
+        //}*/
     }
     
     public ImageIcon getImageIcon()
@@ -96,7 +145,8 @@ public class Tank extends Element implements Controller, Mechanics
     @Override
     public void move(int direction) 
     {
-        this.repainted = false;
+        repainted = false;
+        //if(this.in_timeline) {
         switch(direction) {
             case Tank.NONE:
                 break;
@@ -105,7 +155,7 @@ public class Tank extends Element implements Controller, Mechanics
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
                 }
-                if(!this.coll_sys.predictCollision(new Point(this.position.x, this.position.y - Tank.DELTA))) {
+                if(!coll_sys.predictCollision(new Point(position.x, position.y - Tank.DELTA))) {
                     position.y -= Tank.DELTA;
                 }
                 break;
@@ -114,7 +164,7 @@ public class Tank extends Element implements Controller, Mechanics
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_down.png");
                 }
-                if(!this.coll_sys.predictCollision(new Point(this.position.x, this.position.y + Tank.DELTA))) {
+                if(!coll_sys.predictCollision(new Point(position.x, position.y + Tank.DELTA))) {
                     position.y += Tank.DELTA;
                 }
                 break;
@@ -123,7 +173,7 @@ public class Tank extends Element implements Controller, Mechanics
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_right.png");
                 }
-                if(!this.coll_sys.predictCollision(new Point(this.position.x  + Tank.DELTA, this.position.y))) {
+                if(!coll_sys.predictCollision(new Point(position.x  + Tank.DELTA, position.y))) {
                     position.x += Tank.DELTA;
                 }
                 break;
@@ -132,11 +182,16 @@ public class Tank extends Element implements Controller, Mechanics
                     orientation = direction;
                     image = new ImageIcon("resources/blocks/tanks/tank_player1_left.png");
                 }
-                if(!this.coll_sys.predictCollision(new Point(this.position.x  - Tank.DELTA, this.position.y))) {
+                if(!coll_sys.predictCollision(new Point(position.x  - Tank.DELTA, position.y))) {
                     position.x -= Tank.DELTA;
                 }
                 break;
         }
+        //}
+    }
+    
+    public void stop()
+    {
     }
     
     @Override
