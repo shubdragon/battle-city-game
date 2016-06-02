@@ -83,7 +83,7 @@ public class PlayGround extends JLayeredPane
         
         forest = new JPanel(new GridLayout(15, 17));
         blocks = new JPanel(new GridLayout(15, 17));
-        toys = new ToysArea(544, 480, this.wg, this.game_loop);
+        toys = new ToysArea(544, 480, this.wg);
         
         // Manually set bounds
         this.setPGElements();

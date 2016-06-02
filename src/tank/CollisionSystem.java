@@ -68,18 +68,27 @@ public class CollisionSystem
     {
         boolean t = false;
         Cell cell = getCellFromPos(future_position);
-        for(int i = 0; i < 2; ++i)
-            for(int j = 0; j < 2; ++j) {
-                if(this.matrix[cell.row + i][cell.col + j] > 0)
+        
+        for(int i = 0; i < 3; ++i) {
+            if(i == 2)
+                if((float)future_position.y/16 <= cell.row)
+                    break;
+            for(int j = 0; j < 3; ++j) {
+                if(j == 2)
+                    if((float)future_position.x/16 <= cell.col)
+                        break;
+                if(this.matrix[cell.row + i + 2][cell.col + j + 2] > 0)
                     t = true;
             }
-        if(future_position.x < 0 || future_position.y < 0 || future_position.x > 514 || future_position.y > 450)
+        }
+        if(future_position.x < 0 || future_position.y < 0 || future_position.x > 504 || future_position.y > 450)
             t = true;
         return t;
     }
     
     private Cell getCellFromPos(Point p)
     {
-        return new Cell(((Integer) (p.y + 7)/16) + 2, ((Integer) (p.x + 7)/16) + 2);
+        int a = p.y/16, b = p.x/16;
+        return new Cell(a, b);
     }
 }

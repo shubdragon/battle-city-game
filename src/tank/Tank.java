@@ -29,8 +29,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
 /**
@@ -44,18 +42,13 @@ import javax.swing.ImageIcon;
 public class Tank extends Element implements Controller, Mechanics
 {
     public final List<List<String>> ubication = new ArrayList();
-    
     public final static int NONE  = 0;
     public final static int UP    = 1;
     public final static int DOWN  = 2;
     public final static int RIGHT = 3;
     public final static int LEFT  = 4;
     public final static int DELTA = 2;
-    
-    private TimeLine game_loop;
-    //private boolean in_timeline = false;
-    //private int direction = 0;
-    
+        
     public boolean repainted = false;
     
     private final Player player;
@@ -72,69 +65,24 @@ public class Tank extends Element implements Controller, Mechanics
         this.coll_sys = c;
     }
     
-    public void addTimeLine(TimeLine gl)
-    {
-        this.game_loop = gl;
-        //this.game_loop.addElement(this, direction);
-    }
-    
     @Override
     public void masterIssuedOrder(int order)
     {
-        //if(!this.in_timeline) {
-            order -= 2000;
-            switch(order) {
-                case KeyEvent.VK_UP:
-                    //this.in_timeline = true;
-                    //this.direction = Tank.UP;
-                    //this.game_loop.addElement(this, Tank.UP);
-                    move(Tank.UP);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    //this.in_timeline = true;
-                    //this.direction = Tank.DOWN;
-                    //this.game_loop.addElement(this, Tank.DOWN);
-                    move(Tank.DOWN);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    //this.in_timeline = true;
-                    //this.direction = Tank.RIGHT;
-                    //this.game_loop.addElement(this, Tank.RIGHT);
-                    move(Tank.RIGHT);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    //this.in_timeline = true;
-                    //this.direction = Tank.LEFT;
-                    //this.game_loop.addElement(this, Tank.LEFT);
-                    move(Tank.LEFT);
-                    break;
-            }
-        //}
-        //if(this.in_timeline) {
-        /*    order -= 3000;
-            switch(order) {
-                case KeyEvent.VK_UP:
-                    //this.in_timeline = false;
-                    //this.game_loop.removeElement(this);
-                    //stop();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    //this.in_timeline = false;
-                    //this.game_loop.removeElement(this);
-                    //stop();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    //this.in_timeline = false;
-                    //this.game_loop.removeElement(this);
-                    //stop();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    //this.in_timeline = false;
-                    //this.game_loop.removeElement(this);
-                    //stop();
-                    break;
-            }
-        //}*/
+        order -= 2000;
+        switch(order) {
+            case KeyEvent.VK_UP:
+                move(Tank.UP);
+                break;
+            case KeyEvent.VK_DOWN:
+                move(Tank.DOWN);
+                break;
+            case KeyEvent.VK_RIGHT:
+                move(Tank.RIGHT);
+                break;
+            case KeyEvent.VK_LEFT:
+                move(Tank.LEFT);
+                break;
+        }
     }
     
     public ImageIcon getImageIcon()
@@ -146,7 +94,7 @@ public class Tank extends Element implements Controller, Mechanics
     public void move(int direction) 
     {
         repainted = false;
-        //if(this.in_timeline) {
+        
         switch(direction) {
             case Tank.NONE:
                 break;
@@ -187,7 +135,6 @@ public class Tank extends Element implements Controller, Mechanics
                 }
                 break;
         }
-        //}
     }
     
     public void stop()

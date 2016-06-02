@@ -50,13 +50,11 @@ public class ToysArea extends JPanel
     Integer[][] coll_graph;
     Player local = null;
     Tank tanky;
-    private final TimeLine game_loop;
     
-    public ToysArea(int width, int height, Integer[][] coll_graph, TimeLine game_loop)
+    public ToysArea(int width, int height, Integer[][] coll_graph)
     {
         super.setSize(width, height);
         this.coll_graph = coll_graph;
-        this.game_loop = game_loop;
     }
     
     public void addPlayer(Player p)
@@ -66,7 +64,6 @@ public class ToysArea extends JPanel
         //Tank player_tank = new Tank(p);
         //player_tank.position = new Point(192, 445);
         tanky = new Tank(local);
-        tanky.addTimeLine(game_loop);
         tanky.position = new Point(192, 420);
         CollisionSystem coll_sys = new CollisionSystem(this.coll_graph);
         coll_sys.addSubscriber(tanky);

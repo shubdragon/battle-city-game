@@ -29,6 +29,7 @@ package tank;
  *
  * @author asmateus
  */
-public class LightHouse {
+public class LightHouse 
+{
     
 }
