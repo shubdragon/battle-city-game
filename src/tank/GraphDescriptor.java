@@ -114,9 +114,9 @@ public class GraphDescriptor implements Descriptor
             case 'l':
                 return 0;
             case 'm':
-                return Integer.MAX_VALUE;        
+                return 3;        
             case 'o':
-                return Integer.MAX_VALUE;
+                return 3;
             case 'v':
                 return 0;
         }

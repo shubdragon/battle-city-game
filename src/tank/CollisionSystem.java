@@ -81,9 +81,35 @@ public class CollisionSystem
                     t = true;
             }
         }
-        if(future_position.x < 0 || future_position.y < 0 || future_position.x > 504 || future_position.y > 450)
+        if(future_position.x < 0 || future_position.y < 0)
             t = true;
         return t;
+    }
+    
+    public boolean predictCollision(int x, int y)
+    {
+        boolean t = false;
+        int row = y/16, col = x/16;
+        if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3)
+            t = true;
+        return t;
+    }
+    
+    public List<Cell> getCollisionCells(int x, int y)
+    {
+        List<Cell> cells = new ArrayList<>();
+        int row = y/16, col = x/16;
+        if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3)
+            cells.add(new Cell(row + 2, col + 2));
+        if((float)((y + 8)/16) > (y + 16)/16) {
+            if(this.matrix[row + 3][col + 2] > 0 && this.matrix[row + 3][col + 2] != 3)
+                cells.add(new Cell(row + 3, col + 2));
+        }
+        if((float)((x + 8)/16) > (x + 16)/16) {
+            if(this.matrix[row + 2][col + 3] > 0 && this.matrix[row + 2][col + 3] != 3)
+                cells.add(new Cell(row + 2, col + 3));
+        }
+        return cells;
     }
     
     private Cell getCellFromPos(Point p)

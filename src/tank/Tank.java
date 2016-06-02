@@ -30,6 +30,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import java.lang.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,16 +51,19 @@ public class Tank extends Element implements Controller, Mechanics
     public final static int RIGHT = 3;
     public final static int LEFT  = 4;
     public final static int DELTA = 2;
-        
-    public boolean repainted = false;
     
     private final Player player;
-    private ImageIcon image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
+    private final ToysArea area;
     
-    public Tank(Player player)
+    private long time_starter;
+    private long time_finalizer = 0;
+    
+    public Tank(Player player, ToysArea area)
     {
         this.player = player;
+        this.area = area;
         this.type = 7;
+        this.image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
     }
     
     public void addCollisionSystem(CollisionSystem c)
@@ -82,6 +88,9 @@ public class Tank extends Element implements Controller, Mechanics
             case KeyEvent.VK_LEFT:
                 move(Tank.LEFT);
                 break;
+            case KeyEvent.VK_SPACE:
+                shoot();
+                break;
         }
     }
     
@@ -94,7 +103,6 @@ public class Tank extends Element implements Controller, Mechanics
     public void move(int direction) 
     {
         repainted = false;
-        
         switch(direction) {
             case Tank.NONE:
                 break;
@@ -137,8 +145,54 @@ public class Tank extends Element implements Controller, Mechanics
         }
     }
     
-    public void stop()
+    public void shoot()
     {
+        // Handle bullet timeout
+        if(this.time_finalizer == 0) {
+            this.time_finalizer = 1;
+            // Creating and configuring bullet
+            Bullet bullet = new Bullet(this.player.party, area);
+            bullet.orientation = this.orientation;
+            switch(this.orientation) {
+                case Tank.UP:
+                    bullet.position = new Point(this.position.x + 16, this.position.y);
+                    bullet.image = new ImageIcon("resources/blocks/dynamic/bullet_up.png");
+                    break;
+                case Tank.DOWN:
+                    bullet.position = new Point(this.position.x + 16, this.position.y + 32);
+                    bullet.image = new ImageIcon("resources/blocks/dynamic/bullet_down.png");
+                    break;
+                case Tank.LEFT:
+                    bullet.position = new Point(this.position.x, this.position.y + 16);
+                    bullet.image = new ImageIcon("resources/blocks/dynamic/bullet_left.png");
+                    break;
+                case Tank.RIGHT:
+                    bullet.position = new Point(this.position.x + 32, this.position.y + 16);
+                    bullet.image = new ImageIcon("resources/blocks/dynamic/bullet_right.png");
+                    break;
+            }
+            bullet.addCollisionSystem(coll_sys);
+            bullet.repainted = false;
+            this.area.toys.add(bullet);
+            
+            bullet.move(bullet.orientation);
+            
+            Thread thread = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        try {
+                            Thread.sleep(800);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Tank.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        time_finalizer = 0;
+                    }
+                }
+            );
+            thread.start();
+        }
     }
     
     @Override

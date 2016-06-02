@@ -26,6 +26,7 @@
 package tank;
 
 import java.awt.Point;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -37,6 +38,8 @@ public abstract class Element
     public int type = -1;
     public CollisionSystem coll_sys;
     public int orientation = 0;
+    public boolean repainted = false;
+    public ImageIcon image = new ImageIcon();
     
     public abstract void move(int direction);
 }

@@ -29,6 +29,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -46,33 +48,42 @@ import javax.swing.JPanel;
  */
 public class ToysArea extends JPanel
 {   
-    List<Player> players = new ArrayList<>();
+    public List<Element> toys = new ArrayList<>();
     Integer[][] coll_graph;
-    Player local = null;
-    Tank tanky;
+    public GraphDescriptor gd;
+    private Player local = null;
     
-    public ToysArea(int width, int height, Integer[][] coll_graph)
+    public ToysArea(int width, int height, GraphDescriptor gd)
     {
         super.setSize(width, height);
-        this.coll_graph = coll_graph;
+        this.gd = gd;
+        this.coll_graph = gd.weight_graph;
+        
     }
     
     public void addPlayer(Player p)
     {
-        players.add(p);
         local = p;
-        //Tank player_tank = new Tank(p);
-        //player_tank.position = new Point(192, 445);
-        tanky = new Tank(local);
-        tanky.position = new Point(192, 420);
+        
+        // Setting up tank of local player
+        Tank player_tank = new Tank(local, this);
+        player_tank.position = new Point(192, 420);
+        
+        // Adding tank to local player
+        local.subscribeTank(player_tank);
+        
+        // Creating and setting up collision system
         CollisionSystem coll_sys = new CollisionSystem(this.coll_graph);
-        coll_sys.addSubscriber(tanky);
-        tanky.addCollisionSystem(coll_sys);
-        coll_sys.guessSubscriberPosition(tanky);
-        //p.subscribeTank(player_tank);
-        local.subscribeTank(tanky);
+        coll_sys.addSubscriber(player_tank);
         
+        // Adding collision system to tank
+        player_tank.addCollisionSystem(coll_sys);
         
+        // Add tank to array of elements to be redrawn
+        this.toys.add(player_tank);
+        
+        this.repaint();
+                
     }
     
     @Override
@@ -80,16 +91,8 @@ public class ToysArea extends JPanel
     {
         super.paintComponent(g);
         
-        // Repaint Tanks
-        //for(int i = 0; i < players.size(); ++i)
-        //    for(int j = 0; j < players.get(i).getTanks().size(); ++i)
-        //        if(players.get(i).getTanks().get(j).repainted == false) {
-        //            players.get(i).getTanks().get(j).repainted = true;
-        //            g.drawImage(players.get(i).getTanks().get(j).getImageIcon().getImage(),
-        //                players.get(i).getTanks().get(j).position.x, 
-        //                players.get(i).getTanks().get(j).position.y, null);
-        //        }
-        //g.drawImage(new ImageIcon("resources/blocks/tanks/tank_player1_up.png").getImage(), 192, 445, null);
-        g.drawImage(tanky.getImageIcon().getImage(), tanky.position.x, tanky.position.y, null);
+        // Repaint Elements
+        for(int i = 0; i < toys.size(); ++i)
+            g.drawImage(toys.get(i).image.getImage(), toys.get(i).position.x, toys.get(i).position.y, null);
     }
 }
