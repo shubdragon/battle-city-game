@@ -46,12 +46,12 @@ public class BlocksArea extends JPanel
     }
     
     @Override
-    public void paintComponent(Graphics g)
+    public synchronized void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         // Repaint Elements
-        //System.out.println(this.bg.size());
-        //System.out.println(this.bg.get(0).size());
+        System.out.println(this.bg.size());
+        System.out.println(this.bg.get(0).size());
         for(int i = 0; i < 15; ++i) {
             for(int j = 0; j < 17; ++j) {
                 if(this.bg.get(i).get(j).imgs.size() > 1) {

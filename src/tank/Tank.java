@@ -137,23 +137,44 @@ public class Tank extends Element implements Controller, Mechanics
     @Override
     public void masterIssuedOrder(int order)
     {
-        order -= 2000;
-        switch(order) {
-            case KeyEvent.VK_UP:
-                move(Tank.UP);
-                break;
-            case KeyEvent.VK_DOWN:
-                move(Tank.DOWN);
-                break;
-            case KeyEvent.VK_RIGHT:
-                move(Tank.RIGHT);
-                break;
-            case KeyEvent.VK_LEFT:
-                move(Tank.LEFT);
-                break;
-            case KeyEvent.VK_SPACE:
-                shoot();
-                break;
+        if(this.player.party == Player.LOCAL) {
+            order -= 2000;
+            switch(order) {
+                case KeyEvent.VK_UP:
+                    move(Tank.UP);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    move(Tank.DOWN);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    move(Tank.RIGHT);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    move(Tank.LEFT);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    shoot();
+                    break;
+            }
+        }
+        else {
+            switch(order) {
+                case 1:
+                    move(Tank.UP);
+                    break;
+                case 2:
+                    move(Tank.DOWN);
+                    break;
+                case 3:
+                    move(Tank.RIGHT);
+                    break;
+                case 4:
+                    move(Tank.LEFT);
+                    break;
+                case 5:
+                    shoot();
+                    break;
+            }
         }
     }
     

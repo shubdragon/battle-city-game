@@ -92,6 +92,26 @@ public class CollisionSystem
         int row = y/16, col = x/16;
         if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3)
             t = true;
+        if(t == false)
+            t = this.predictCollisionSubscriber(row, col);
+        return t;
+    }
+    
+    public boolean predictCollisionSubscriber(int row, int col)
+    {
+        boolean t = false;
+        for(int i = 0; i < this.subscribers.size(); ++i) {
+            if(subscribers.get(i).type == -1) {
+                if(subscribers.get(i).position.y/16 == row && subscribers.get(i).position.x/16 == col)
+                    return true;
+            }
+            else {
+                if((subscribers.get(i).position.y/16 == row || subscribers.get(i).position.y/16 + 1 == row)
+                    && (subscribers.get(i).position.x/16 == col || subscribers.get(i).position.x/16 + 1 == col)) {
+                    return true;
+                }
+            }
+        }
         return t;
     }
     

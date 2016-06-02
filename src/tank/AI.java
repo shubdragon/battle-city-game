@@ -25,8 +25,10 @@
  */
 package tank;
 
-import java.awt.Point;
-import java.util.Timer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,53 +36,67 @@ import java.util.logging.Logger;
  *
  * @author asmateus
  */
-public class PlayerManager extends Thread
+public class AI extends TimerTask
 {
+    public static final int CRAZY = 0;
+    public static final int STUBBORN = 1;
+    public static final int SNEAKY = 2;
+    public static final int SUICIDE = 3;
     
-    private final ToysArea area;
-    private final Timer timer = new Timer(true);
+    private Player subscriber;
     
-    public PlayerManager(ToysArea area)
+    public AI(Player p)
     {
-        this.area = area;
-    }
-    
-    public void spawnPlayer()
-    {
-        Player p = new Player(Player.MACHINE);
-        p.addToysArea(area);
-        Tank t = new Tank(p, area, Tank.CONTINUOUS);
-        t.addCollisionSystem(area.coll_sys);
-        t.position = new Point(512, 0);
-        p.subscribeTank(t);
-        
-        area.coll_sys.addSubscriber(t);
-        area.enemies.add(t);
-        area.toys.add(t);
-        area.repaint();
-        
-        // Init AI
-        p.personality = AI.CRAZY;
-        p.initAI();
+       this.subscriber = p;
     }
     
     @Override
     public void run()
     {
-        // Check if a new tank can be created
-        //timer.scheduleAtFixedRate(deus, 0, 500);
-        while(area.local.live_points > 0 || (area.enemies.size() > 0 && area.pg.world.getEnemyCounter().counter > 0)) {
-            if(this.area.enemies.size() < 8) {
-                if(this.area.pg.world.getEnemyCounter().getLocalCount() > 0) {
-                    spawnPlayer();
-                }
-                
-            }
+        decide(subscriber);
+    }
+    
+    public void decide(Player subscriber)
+    {
+        switch(subscriber.personality) {
+            case AI.CRAZY:
+                decideCrazy(subscriber);
+                break;
+            case AI.SNEAKY:
+                break;
+            case AI.STUBBORN:
+                break;
+            case AI.SUICIDE:
+                break;
+        }
+    }
+    
+    private void decideCrazy(Player subscriber)
+    {
+        Random rand = new Random();
+        int  n = rand.nextInt(6) + 1;
+        for(int i = 0; i < 50; ++i) {
+            subscriber.masterIssuedOrder(n);
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
-                Logger.getLogger(PlayerManager.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AI.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }           
+    }
+    
+    private void decideSneaky()
+    {
+        
+    }
+    
+    private void decideStubborn()
+    {
+        
+    }
+    
+    private void decideSuicide()
+    {
+        
     }
 }

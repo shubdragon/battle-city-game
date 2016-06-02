@@ -28,6 +28,7 @@ package tank;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  *
@@ -43,6 +44,11 @@ public class Player extends Subscriber
     private ToysArea toys_area = null;
     public int party;
     
+    public int live_points = 3;
+    public int personality = AI.CRAZY;
+    public AI deus;
+    public Timer timer = new Timer();
+    
     // local player code
     public static final int LOCAL = 1000;
     public static final int MACHINE = 2000;
@@ -52,9 +58,24 @@ public class Player extends Subscriber
     {
         tanks = new ArrayList<>();
         this.party = party;
-        
+        this.deus = new AI(this);
         // add Codes for linker
         addCodes();
+    }
+    
+    public void setPersonality(int p)
+    {
+        this.personality = p;
+    }
+    
+    public void initAI()
+    {
+        timer.scheduleAtFixedRate(deus, 0, 500);
+    }
+    
+    public void destroyPlayer()
+    {
+        timer.cancel();
     }
     
     private void addCodes()
@@ -81,13 +102,21 @@ public class Player extends Subscriber
     @Override
     public void masterIssuedOrder (int order)
     {
-        if(order > 1999) {
-            if(order == 2000 + KeyEvent.VK_UP || order == 2000 + KeyEvent.VK_DOWN || order == 2000 + KeyEvent.VK_LEFT ||
-                order == 2000 + KeyEvent.VK_RIGHT || order == 2000 + KeyEvent.VK_SPACE) {
-                for(int i = 0; i < this.tanks.size(); ++i)
-                    this.tanks.get(i).masterIssuedOrder(order);
-                this.toys_area.repaint();
+        if(this.party == Player.LOCAL) {
+            if(order > 1999) {
+                if(order == 2000 + KeyEvent.VK_UP || order == 2000 + KeyEvent.VK_DOWN || order == 2000 + KeyEvent.VK_LEFT ||
+                    order == 2000 + KeyEvent.VK_RIGHT || order == 2000 + KeyEvent.VK_SPACE) {
+                    for(int i = 0; i < this.tanks.size(); ++i)
+                        this.tanks.get(i).masterIssuedOrder(order);
+                    this.toys_area.repaint();
+                }
             }
+        }
+        else if(this.party == Player.MACHINE) {
+            for(int i = 0; i < this.tanks.size(); ++i) {
+                this.tanks.get(i).masterIssuedOrder(order);
+            }
+            this.toys_area.repaint();
         }
     }
     

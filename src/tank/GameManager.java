@@ -107,6 +107,7 @@ public class GameManager
     {
         area.removeAll();
         area.addLinker();
+        area.getLinker().delay = 20;
         area.setBackground(Color.GRAY);
         area.repaint();
     }

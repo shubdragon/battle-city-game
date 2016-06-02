@@ -55,7 +55,7 @@ public class ToysArea extends JPanel
     public GraphDescriptor gd;
     public CollisionSystem coll_sys;
     
-    private Player local = null;
+    public Player local = null;
     
     public ToysArea(int width, int height, GraphDescriptor gd, PlayGround pg)
     {

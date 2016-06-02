@@ -47,6 +47,8 @@ public class Linker extends JComponent implements KeyListener
     private final List<Subscriber> unsubscribed  = new ArrayList<>();
     private final List<Integer> keys = new ArrayList<>();
     
+    public int delay = 200;
+    
     
     // Return the key events allways
     Thread thread = new Thread(
@@ -64,7 +66,7 @@ public class Linker extends JComponent implements KeyListener
                             });
                         });
                         try {
-                            Thread.sleep(20);
+                            Thread.sleep(delay);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Linker.class.getName()).log(Level.SEVERE, null, ex);
                         }

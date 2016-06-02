@@ -25,9 +25,6 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,10 +35,8 @@ import java.util.logging.Logger;
 public class Bullet extends Element 
 {
     private final ToysArea area;
-    private CollisionSystem coll_sys;
-    private Cell coll_cell;
     private boolean is_collided = false;
-    private Bullet bull;
+    private final Bullet bull;
     
     public Bullet(int party, ToysArea area)
     {
@@ -122,7 +117,7 @@ public class Bullet extends Element
                                     cell = coll_sys.getCollisionCell(position.x + 2, position.y);
                                     break;
                             }
-                            System.out.println((cell.row-2) + ", " + (cell.col-2));
+                            //System.out.println((cell.row-2) + ", " + (cell.col-2));
                             area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2] = 
                                 damage(area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2], direction);
                             area.gd.translate(null);
