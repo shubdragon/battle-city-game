@@ -37,7 +37,7 @@ import javax.swing.JPanel;
  */
 public class EnemyCounter extends JPanel 
 {
-    int counter;
+    int counter = 24;
     
     public EnemyCounter()
     {
@@ -63,8 +63,8 @@ public class EnemyCounter extends JPanel
         counter = getLocalCount();
     }
     
-    private int getLocalCount()
+    public int getLocalCount()
     {
-        return 24;
+        return counter;
     }
 }

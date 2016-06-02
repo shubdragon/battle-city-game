@@ -28,6 +28,9 @@ package tank;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -49,8 +52,10 @@ import javax.swing.SwingConstants;
 public class World
 {
     private final GraphDescriptor graph;
-    private final GameArea container;
+    public GameArea container;
+    private final List<Point> posible_spawn_points;
     private final PlayGround playground;
+    private final EnemyCounter enemy_counter;
     
     private final String title;
     
@@ -60,7 +65,9 @@ public class World
         
         this.container = container;
         this.graph = graph;
-        this.playground = new PlayGround(this.graph, container);
+        this.playground = new PlayGround(this.graph, this);
+        this.enemy_counter = new EnemyCounter();
+        this.posible_spawn_points = new ArrayList<>();
     }
     
     private void setWorldTitle(GridBagConstraints c)
@@ -83,6 +90,16 @@ public class World
         return 1;
     }
     
+    public EnemyCounter getEnemyCounter()
+    {
+        return this.enemy_counter;
+    }
+    
+    public List<Point> getPosibleSpawnPoints()
+    {
+        return null;
+    }
+    
     public void start()
     {
         GridBagConstraints c = new GridBagConstraints();
@@ -95,7 +112,6 @@ public class World
         container.add(playground, playground.getPGConstraints());
         
         // Add enemy counter
-        EnemyCounter enemy_counter = new EnemyCounter();
         enemy_counter.startCounter();
         
         c.gridx = 3;

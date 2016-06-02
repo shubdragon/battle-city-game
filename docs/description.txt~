@@ -1,0 +1,103 @@
+Codes to generate graph
+
+a     :    tanque rápido
+b     :    tanque normal
+c     :    tanque pequeño
+d     :    tanque de balística
+e     :    tanque de reconocimiento
+f     :    tanque acuático
+g     :    tanque de fuego rápido
+h     :    tanque de alto recubrimiento
+
+I     :    brick
+J     :    steel
+K     :    iron
+L     :    forest
+M     :    sea
+O     :    deepsea
+
+i     :    small brick
+j     :    small steel
+k     :    small iron
+l     :    small forest
+m     :    small sea
+O     :    small deepsea
+
+p     :    poder de barrera protectora
+q     :    poder de congelamiento
+r     :    poder de protección de base
+s     :    poder de mejora
+t     :    poder de granada
+u     :    poder de vida extra
+v     :    poder de disparo ráfaga
+
+Y     :    void
+y     :    small_void
+
+X     :    eagle
+Z     :    dead flag
+
+La unidad mínima del mundo es 1/4 de bloque, dado que el mundo es de 18x25 bloques, hay una densidad de puntos de
+1800. La forma de representación será la siguiente:
+
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+{.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.} {.}
+
+donde el punto en <<{.}>> indica una cadena de cuatro caracteres, para indicar la forma en la que irían ubicados en su contenedor superior:
+Ejemplo:
+{iiii} es equivalente a {I} dado que ambos representan el bloque L L
+                                                                 L L
+
+En el archivo de base de datos en cada celda se guarda un tipo de dato CHARACTER de tamaño 4.
+
+EJEMPLO DE MUNDO:
+
+    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    
+    ,    ,    ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,  jj,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,jj  ,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,K   ,    ,iijj,    ,I   ,I   ,    ,    ,    ,    ,    ,I   ,I   ,    ,iijj,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,I   ,  ii,I   ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,I   ,    ,I   ,    ,I   ,ii  ,I   ,    ,I   ,    ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,I   ,    ,I   ,    ,    ,    ,    ,    ,I   ,    ,I   ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,I   ,    ,    ,    ,    ,    ,    ,    ,I   ,    ,    ,    ,K   ,    
+    ,K   ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,I   ,    ,I   ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,I   ,I   ,    ,    ,    ,    ,    ,    ,    ,I   ,I   ,    ,    ,    ,    
+    ,K   ,    ,    ,    ,    ,    ,    ,   i,  ii,  i ,    ,    ,    ,    ,    ,    ,K   ,    
+    ,    ,    ,    ,    ,    ,    ,    , i i,X   ,i i ,    ,    ,    ,    ,    ,    ,    ,    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

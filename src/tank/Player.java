@@ -45,6 +45,8 @@ public class Player extends Subscriber
     
     // local player code
     public static final int LOCAL = 1000;
+    public static final int MACHINE = 2000;
+    public static final int HOST = 3000;
     
     public Player(int party)
     {
@@ -57,11 +59,13 @@ public class Player extends Subscriber
     
     private void addCodes()
     {
-        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_UP);
-        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_DOWN);
-        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_LEFT);
-        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_RIGHT);
-        this.RESPONSE_CODES.add(2000 + KeyEvent.VK_SPACE);
+        if(this.party == Player.LOCAL) {
+            this.RESPONSE_CODES.add(2000 + KeyEvent.VK_UP);
+            this.RESPONSE_CODES.add(2000 + KeyEvent.VK_DOWN);
+            this.RESPONSE_CODES.add(2000 + KeyEvent.VK_LEFT);
+            this.RESPONSE_CODES.add(2000 + KeyEvent.VK_RIGHT);
+            this.RESPONSE_CODES.add(2000 + KeyEvent.VK_SPACE);
+        }
     }
     
     public void addToysArea(ToysArea toys)

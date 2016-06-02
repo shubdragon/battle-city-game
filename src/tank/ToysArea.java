@@ -49,9 +49,12 @@ import javax.swing.JPanel;
 public class ToysArea extends JPanel
 {   
     public List<Element> toys = new ArrayList<>();
+    public List<Tank> enemies = new ArrayList<>();
     public PlayGround pg;
-    Integer[][] coll_graph;
+    public Integer[][] coll_graph;
     public GraphDescriptor gd;
+    public CollisionSystem coll_sys;
+    
     private Player local = null;
     
     public ToysArea(int width, int height, GraphDescriptor gd, PlayGround pg)
@@ -60,22 +63,21 @@ public class ToysArea extends JPanel
         this.gd = gd;
         this.pg = pg;
         this.coll_graph = gd.weight_graph;
+        this.coll_sys = new CollisionSystem(this.coll_graph);
         
     }
     
-    public void addPlayer(Player p)
+    public void addLocalPlayer(Player p)
     {
         local = p;
-        
         // Setting up tank of local player
-        Tank player_tank = new Tank(local, this);
+        Tank player_tank = new Tank(local, this, Tank.NORMAL);
         player_tank.position = new Point(192, 420);
         
         // Adding tank to local player
         local.subscribeTank(player_tank);
         
-        // Creating and setting up collision system
-        CollisionSystem coll_sys = new CollisionSystem(this.coll_graph);
+        // Setting up collision system
         coll_sys.addSubscriber(player_tank);
         
         // Adding collision system to tank
@@ -85,7 +87,16 @@ public class ToysArea extends JPanel
         this.toys.add(player_tank);
         
         this.repaint();
-                
+        this.startPlayerManager();
+    }
+    
+    /**
+     * Starts thread that spawns enemy tanks according to certain conditions
+     */
+    public void startPlayerManager()
+    {
+        PlayerManager manager = new PlayerManager(this);
+        manager.start();
     }
     
     @Override

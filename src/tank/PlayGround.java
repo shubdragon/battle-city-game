@@ -60,9 +60,11 @@ import javax.swing.JPanel;
 public class PlayGround extends JLayeredPane
 {
     private final JPanel forest;
-    public final BlocksArea blocks;
     private final ToysArea toys;
     private final GameArea container;
+    
+    public final BlocksArea blocks;
+    public World world;
     
     private final TimeLine game_loop;
     
@@ -70,14 +72,15 @@ public class PlayGround extends JLayeredPane
     private final List<List<BlockDescriptor>> bg;
     private final Integer[][] wg;
     
-    public PlayGround(GraphDescriptor gd, GameArea container)
+    public PlayGround(GraphDescriptor gd, World world)
     {
         super.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
         super.setPreferredSize(new Dimension(552,488));
         
         this.game_loop = new TimeLine();
         
-        this.container = container;
+        this.container = world.container;
+        this.world = world;
         this.bg = gd.block_graph;
         this.wg = gd.weight_graph;
         
@@ -141,7 +144,7 @@ public class PlayGround extends JLayeredPane
     {        
         Player local = new Player(Player.LOCAL);
         local.addToysArea(toys);
-        toys.addPlayer(local);
+        toys.addLocalPlayer(local);
         container.getLinker().addSubscriber(local);
         
         this.add(blocks, new Integer(0));

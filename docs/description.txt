@@ -1,13 +1,13 @@
 Codes to generate graph
 
-a     :    tanque rápido
-b     :    tanque normal
-c     :    tanque pequeño
-d     :    tanque de balística
-e     :    tanque de reconocimiento
-f     :    tanque acuático
-g     :    tanque de fuego rápido
-h     :    tanque de alto recubrimiento
+1     :    tanque rápido
+2     :    tanque normal
+3     :    tanque pequeño
+4     :    tanque de balística
+5     :    tanque de reconocimiento
+6     :    tanque acuático
+7     :    tanque de fuego rápido
+8     :    tanque de alto recubrimiento
 
 I     :    brick
 J     :    steel

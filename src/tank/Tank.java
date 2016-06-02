@@ -44,7 +44,6 @@ import java.util.logging.Logger;
  */
 public class Tank extends Element implements Controller, Mechanics
 {
-    public final List<List<String>> ubication = new ArrayList();
     public final static int NONE  = 0;
     public final static int UP    = 1;
     public final static int DOWN  = 2;
@@ -52,18 +51,82 @@ public class Tank extends Element implements Controller, Mechanics
     public final static int LEFT  = 4;
     public final static int DELTA = 2;
     
+    public final static int RAPID      = 1;
+    public final static int NORMAL     = 2;
+    public final static int SMALL      = 3;
+    public final static int BALISTIC   = 4;
+    public final static int SURVEY     = 5;
+    public final static int ACUATIC    = 6;
+    public final static int CONTINUOUS = 7;
+    public final static int FORTE      = 8;
+    
+    private String resource;
+    private String bonus;
+    private String player_type;
+    
     private final Player player;
     private final ToysArea area;
     
     private long time_starter;
     private long time_finalizer = 0;
     
-    public Tank(Player player, ToysArea area)
+    public Tank(Player player, ToysArea area, int type)
     {
         this.player = player;
         this.area = area;
-        this.type = 7;
-        this.image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
+        this.type = type;
+        this.resource = this.getPathFromType();
+        this.player_type = getPlayerType();
+        this.bonus = "";
+        this.image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_up.png");
+    }
+    
+    private String getPlayerType()
+    {
+        if(player.party == Player.LOCAL)
+            return "_player1";
+        else if(player.party == Player.MACHINE)
+            return "_machine";
+        else
+            return "_player2";
+    }
+    
+    private String getPathFromType()
+    {
+        switch(this.type)
+        {
+            case Tank.RAPID:
+                return "tank_rapid";
+            case Tank.NORMAL:
+                return "tank";
+            case Tank.SMALL:
+                return "tank_small";
+            case Tank.BALISTIC:
+                return "tank_balistic";
+            case Tank.SURVEY:
+                return "tank_survey";
+            case Tank.ACUATIC:
+                return "tank_acuatic";
+            case Tank.CONTINUOUS:
+                return "tank_continuous";
+            case Tank.FORTE:
+                return "tank_forte";
+        }
+        return "tank";
+    }
+    
+    public void setType(int t)
+    {
+        this.type = t;
+        this.resource = this.getPathFromType();
+    }
+    
+    public void setBonus(int b)
+    {
+        if(b == 1)
+            this.bonus = "_b";
+        else
+            this.bonus = "";
     }
     
     public void addCollisionSystem(CollisionSystem c)
@@ -109,7 +172,7 @@ public class Tank extends Element implements Controller, Mechanics
             case Tank.UP:
                 if(orientation != direction) {
                     orientation = direction;
-                    image = new ImageIcon("resources/blocks/tanks/tank_player1_up.png");
+                    image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_up.png");
                 }
                 if(!coll_sys.predictCollision(new Point(position.x, position.y - Tank.DELTA))) {
                     position.y -= Tank.DELTA;
@@ -118,7 +181,7 @@ public class Tank extends Element implements Controller, Mechanics
             case Tank.DOWN:
                 if(orientation != direction) {
                     orientation = direction;
-                    image = new ImageIcon("resources/blocks/tanks/tank_player1_down.png");
+                    image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_down.png");
                 }
                 if(!coll_sys.predictCollision(new Point(position.x, position.y + Tank.DELTA))) {
                     position.y += Tank.DELTA;
@@ -127,7 +190,7 @@ public class Tank extends Element implements Controller, Mechanics
             case Tank.RIGHT:
                 if(orientation != direction) {
                     orientation = direction;
-                    image = new ImageIcon("resources/blocks/tanks/tank_player1_right.png");
+                    image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_right.png");
                 }
                 if(!coll_sys.predictCollision(new Point(position.x  + Tank.DELTA, position.y))) {
                     position.x += Tank.DELTA;
@@ -136,7 +199,7 @@ public class Tank extends Element implements Controller, Mechanics
             case Tank.LEFT:
                 if(orientation != direction) {
                     orientation = direction;
-                    image = new ImageIcon("resources/blocks/tanks/tank_player1_left.png");
+                    image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_left.png");
                 }
                 if(!coll_sys.predictCollision(new Point(position.x  - Tank.DELTA, position.y))) {
                     position.x -= Tank.DELTA;
