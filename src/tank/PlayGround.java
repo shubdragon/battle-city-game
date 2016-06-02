@@ -60,7 +60,7 @@ import javax.swing.JPanel;
 public class PlayGround extends JLayeredPane
 {
     private final JPanel forest;
-    private final JPanel blocks;
+    public final BlocksArea blocks;
     private final ToysArea toys;
     private final GameArea container;
     
@@ -82,8 +82,8 @@ public class PlayGround extends JLayeredPane
         this.wg = gd.weight_graph;
         
         forest = new JPanel(new GridLayout(15, 17));
-        blocks = new JPanel(new GridLayout(15, 17));
-        toys = new ToysArea(544, 480, gd);
+        blocks = new BlocksArea(gd.block_graph);
+        toys = new ToysArea(544, 480, gd, this);
         
         // Manually set bounds
         this.setPGElements();
@@ -123,14 +123,13 @@ public class PlayGround extends JLayeredPane
             for(int j = 0; j < bg.get(i).size(); ++j) {
                 if(bg.get(i).get(j).code.equals("L   ")) {
                     forest.add(bg.get(i).get(j));
-                    blocks.add(new JLabel());
                 }
                 else {
                     forest.add(new JLabel());
-                    blocks.add(bg.get(i).get(j));
                 }
             }
         }
+        this.blocks.repaint();
     }
     
     public GridBagConstraints getPGConstraints()

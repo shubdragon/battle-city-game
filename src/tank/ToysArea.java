@@ -49,14 +49,16 @@ import javax.swing.JPanel;
 public class ToysArea extends JPanel
 {   
     public List<Element> toys = new ArrayList<>();
+    public PlayGround pg;
     Integer[][] coll_graph;
     public GraphDescriptor gd;
     private Player local = null;
     
-    public ToysArea(int width, int height, GraphDescriptor gd)
+    public ToysArea(int width, int height, GraphDescriptor gd, PlayGround pg)
     {
         super.setSize(width, height);
         this.gd = gd;
+        this.pg = pg;
         this.coll_graph = gd.weight_graph;
         
     }

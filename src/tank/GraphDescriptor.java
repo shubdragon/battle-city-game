@@ -1,4 +1,4 @@
-/*
+    /*
  * Copyright (c) 2016, asmateus
  * All rights reserved.
  *
@@ -56,7 +56,7 @@ public class GraphDescriptor implements Descriptor
                 this.weight_graph[i][j] = 0;
     }
     
-    private void createWeightGraph()
+    public void createWeightGraph()
     {
         // Adding normal cells
         char[] code = new char[4];
@@ -127,6 +127,7 @@ public class GraphDescriptor implements Descriptor
     @Override
     public void translate(Object o)
     {
+        block_graph.clear();
         BlockDescriptor bck;
         for(int i = 0; i < 15; ++i) {
             block_graph.add(new ArrayList<>());

@@ -183,7 +183,7 @@ public class Tank extends Element implements Controller, Mechanics
                     public void run()
                     {
                         try {
-                            Thread.sleep(800);
+                            Thread.sleep(600);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Tank.class.getName()).log(Level.SEVERE, null, ex);
                         }

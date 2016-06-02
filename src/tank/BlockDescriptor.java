@@ -40,7 +40,7 @@ import javax.swing.JPanel;
  */
 public class BlockDescriptor extends JPanel implements Descriptor
 {
-    private final List<String> imgs;
+    public List<String> imgs;
     public String code = "";
     public int block_weight = 0;
     

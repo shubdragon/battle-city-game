@@ -26,6 +26,7 @@
 package tank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,25 +106,27 @@ public class Bullet extends Element
                         }
                         if(is_collided) {
                             area.toys.remove(bull);
-                            List<Cell> cells = new ArrayList<>();
+                            Cell cell = new Cell(0,0);
                             switch(direction)
                             {
                                 case Tank.UP:
-                                    cells = coll_sys.getCollisionCells(position.x, position.y - 2);
+                                    cell = coll_sys.getCollisionCell(position.x, position.y - 2);
                                     break;
                                 case Tank.DOWN:
-                                    cells = coll_sys.getCollisionCells(position.x, position.y + 2);
+                                    cell = coll_sys.getCollisionCell(position.x, position.y + 2);
                                     break;
                                 case Tank.LEFT:
-                                    cells = coll_sys.getCollisionCells(position.x - 2, position.y);
+                                    cell = coll_sys.getCollisionCell(position.x - 2, position.y);
                                     break;
                                 case Tank.RIGHT:
-                                    cells = coll_sys.getCollisionCells(position.x + 2, position.y);
+                                    cell = coll_sys.getCollisionCell(position.x + 2, position.y);
                                     break;
                             }
-                            for(int i = 0; i < cells.size(); ++i) {
-                                damage(area.gd.block_graph.get((cells.get(i).col - 2)/2).get((cells.get(i).row - 2)/2), direction);
-                            }
+                            System.out.println((cell.row-2) + ", " + (cell.col-2));
+                            area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2] = 
+                                damage(area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2], direction);
+                            area.gd.translate(null);
+                            
                         }
                         area.repaint();
                     }
@@ -133,29 +136,74 @@ public class Bullet extends Element
         thread.start();
     }
     
-    private void damage(BlockDescriptor b, int direction)
+    private String damage(String code, int direction)
     {
-        switch(b.code) {
+        switch(code) {
             case "I   ":
-                b.code = "iiii";
+                code = "iiii";
                 break;
             case "J   ":
-                b.code = "jjjj";
+                code = "jjjj";
                 break;
             case "K   ":
-                b.code = "kkkk";
+                code = "kkkk";
                 break;
         }
-        
+        char[] c = code.toCharArray();
         switch(direction) {
             case Tank.UP:
+                if(c[2] == ' ' && c[3] == ' ') {
+                    c[0] = reduceByCode(c[0]);
+                    c[1] = reduceByCode(c[1]);
+                }
+                else {
+                    c[2] = reduceByCode(c[2]);
+                    c[3] = reduceByCode(c[3]);
+                }
                 break;
             case Tank.DOWN:
+                if(c[0] == ' ' && c[1] == ' ') {
+                    c[2] = reduceByCode(c[2]);
+                    c[3] = reduceByCode(c[3]);
+                }
+                else {
+                    c[0] = reduceByCode(c[0]);
+                    c[1] = reduceByCode(c[1]);
+                }
                 break;
             case Tank.LEFT:
+                if(c[1] == ' ' && c[3] == ' ') {
+                    c[0] = reduceByCode(c[0]);
+                    c[2] = reduceByCode(c[2]);
+                }
+                else {
+                    c[1] = reduceByCode(c[1]);
+                    c[3] = reduceByCode(c[3]);
+                }
                 break;
             case Tank.RIGHT:
+                if(c[2] == ' ' && c[0] == ' ') {
+                    c[1] = reduceByCode(c[1]);
+                    c[3] = reduceByCode(c[3]);
+                }
+                else {
+                    c[2] = reduceByCode(c[2]);
+                    c[0] = reduceByCode(c[0]);
+                }
                 break;
         }
+        code = "";
+        code += c[0];
+        code += c[1];
+        code += c[2];
+        code += c[3];
+        return code;
+    }
+    
+    private char reduceByCode(char c)
+    {
+        if(c == 'i')
+            c = ' ';
+        return c;
     }
 }

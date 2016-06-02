@@ -95,21 +95,12 @@ public class CollisionSystem
         return t;
     }
     
-    public List<Cell> getCollisionCells(int x, int y)
+    public Cell getCollisionCell(int x, int y)
     {
-        List<Cell> cells = new ArrayList<>();
         int row = y/16, col = x/16;
         if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3)
-            cells.add(new Cell(row + 2, col + 2));
-        if((float)((y + 8)/16) > (y + 16)/16) {
-            if(this.matrix[row + 3][col + 2] > 0 && this.matrix[row + 3][col + 2] != 3)
-                cells.add(new Cell(row + 3, col + 2));
-        }
-        if((float)((x + 8)/16) > (x + 16)/16) {
-            if(this.matrix[row + 2][col + 3] > 0 && this.matrix[row + 2][col + 3] != 3)
-                cells.add(new Cell(row + 2, col + 3));
-        }
-        return cells;
+            return  new Cell(row + 2, col + 2);
+        return new Cell(0,0);
     }
     
     private Cell getCellFromPos(Point p)
