@@ -36,6 +36,8 @@ public abstract class Element
 {
     public Point position = new Point();
     public int type = 7;
+    public int live_points;
+    public int lives = 1;
     public CollisionSystem coll_sys;
     public int orientation = 0;
     public boolean repainted = false;

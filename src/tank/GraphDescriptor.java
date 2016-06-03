@@ -42,6 +42,7 @@ public class GraphDescriptor implements Descriptor
     public String[][] im = new String[15][17];
     public List<List<BlockDescriptor>> block_graph = new ArrayList<>();
     public Integer[][] weight_graph = new Integer[34][38];
+    public int need_redraw = 0;
             
     public GraphDescriptor(String[][] input_matrix)
     {

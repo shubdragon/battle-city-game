@@ -25,8 +25,6 @@
  */
 package tank;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.TimerTask;
 import java.util.logging.Level;

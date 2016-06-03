@@ -66,8 +66,6 @@ public class PlayGround extends JLayeredPane
     public final BlocksArea blocks;
     public World world;
     
-    private final TimeLine game_loop;
-    
     private final GridBagConstraints c = new GridBagConstraints();
     private final List<List<BlockDescriptor>> bg;
     private final Integer[][] wg;
@@ -77,15 +75,13 @@ public class PlayGround extends JLayeredPane
         super.setBorder(BorderFactory.createLineBorder(Color.WHITE, 4));
         super.setPreferredSize(new Dimension(552,488));
         
-        this.game_loop = new TimeLine();
-        
         this.container = world.container;
         this.world = world;
         this.bg = gd.block_graph;
         this.wg = gd.weight_graph;
         
         forest = new JPanel(new GridLayout(15, 17));
-        blocks = new BlocksArea(gd.block_graph);
+        blocks = new BlocksArea(gd);
         toys = new ToysArea(544, 480, gd, this);
         
         // Manually set bounds
@@ -132,7 +128,6 @@ public class PlayGround extends JLayeredPane
                 }
             }
         }
-        this.blocks.repaint();
     }
     
     public GridBagConstraints getPGConstraints()
@@ -150,8 +145,6 @@ public class PlayGround extends JLayeredPane
         this.add(blocks, new Integer(0));
         this.add(toys, new Integer(1));
         this.add(forest, new Integer(2));
-        
-        game_loop.start();
         
         System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
         //container.repaint();

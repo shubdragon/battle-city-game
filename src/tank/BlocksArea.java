@@ -37,21 +37,27 @@ import javax.swing.JPanel;
  */
 public class BlocksArea extends JPanel 
 {
-    private final List<List<BlockDescriptor>> bg;
+    private final GraphDescriptor gd;
+    private List<List<BlockDescriptor>> bg;
     
-    public BlocksArea(List<List<BlockDescriptor>> bg)
+    public BlocksArea(GraphDescriptor gd)
     {
         this.setBackground(Color.BLACK);
-        this.bg = bg;
+        this.gd = gd;
+        this.bg = this.gd.block_graph;
     }
     
     @Override
-    public synchronized void paintComponent(Graphics g)
+    public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
+        
+        if(this.gd.need_redraw == 1) {
+            this.gd.need_redraw = 0;
+            this.gd.translate(g);
+            this.bg = this.gd.block_graph;
+        }
         // Repaint Elements
-        System.out.println(this.bg.size());
-        System.out.println(this.bg.get(0).size());
         for(int i = 0; i < 15; ++i) {
             for(int j = 0; j < 17; ++j) {
                 if(this.bg.get(i).get(j).imgs.size() > 1) {

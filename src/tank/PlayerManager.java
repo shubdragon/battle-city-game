@@ -26,9 +26,9 @@
 package tank;
 
 import java.awt.Point;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 /**
  *
@@ -38,7 +38,7 @@ public class PlayerManager extends Thread
 {
     
     private final ToysArea area;
-    private final Timer timer = new Timer(true);
+    private int run = 1;
     
     public PlayerManager(ToysArea area)
     {
@@ -68,13 +68,38 @@ public class PlayerManager extends Thread
     public void run()
     {
         // Check if a new tank can be created
-        //timer.scheduleAtFixedRate(deus, 0, 500);
-        while(area.local.live_points > 0 || (area.enemies.size() > 0 && area.pg.world.getEnemyCounter().counter > 0)) {
-            if(this.area.enemies.size() < 8) {
+        while(run == 1) {
+            if(this.area.enemies.size() < 4) {
                 if(this.area.pg.world.getEnemyCounter().getLocalCount() > 0) {
                     spawnPlayer();
                 }
-                
+            }
+            Tank t;
+            for(int i = 0; i < area.enemies.size(); ++i) {
+                t = area.enemies.get(i);
+                if(area.enemies.get(i).live_points <= 0) {
+                    
+                    // Remove tank from everywere
+                    t.player.deus.cancel();
+                    area.coll_sys.removeSubscriber(t);
+                    area.toys.remove(t);
+                    area.enemies.remove(t);
+                    area.pg.world.getEnemyCounter().counter -= 1;
+                    area.pg.world.getEnemyCounter().labels.get(area.pg.world.getEnemyCounter().counter).setText("");
+                } 
+            }
+            t = area.local.getTanks().get(0);
+            if(t.live_points <= 0) {
+                // Remove local player from everywere
+                t.live_points = 1;
+                t.lives -= 1;
+                if(t.lives < 0) {
+                    area.coll_sys.removeSubscriber(t);
+                    area.toys.remove(t);
+                }
+                else{
+                    t.position = new Point(192, 420);
+                }
             }
             try {
                 Thread.sleep(10);

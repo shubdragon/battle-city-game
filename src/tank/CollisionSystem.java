@@ -77,8 +77,9 @@ public class CollisionSystem
                 if(j == 2)
                     if((float)future_position.x/16 <= cell.col)
                         break;
-                if(this.matrix[cell.row + i + 2][cell.col + j + 2] > 0)
+                if(this.matrix[cell.row + i + 2][cell.col + j + 2] > 0) {
                     t = true;
+                }
             }
         }
         if(future_position.x < 0 || future_position.y < 0)
@@ -86,29 +87,35 @@ public class CollisionSystem
         return t;
     }
     
-    public boolean predictCollision(int x, int y)
+    public int predictCollision(int x, int y)
     {
-        boolean t = false;
         int row = y/16, col = x/16;
-        if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3)
-            t = true;
-        if(t == false)
-            t = this.predictCollisionSubscriber(row, col);
-        return t;
+        if(this.matrix[row + 2][col + 2] > 0 && this.matrix[row + 2][col + 2] != 3) {
+            return this.matrix[row + 2][col + 2];
+        }
+        return 0;
     }
     
-    public boolean predictCollisionSubscriber(int row, int col)
+    public synchronized boolean predictCollisionSubscriber(int col, int row, Bullet current, Tank tank)
     {
         boolean t = false;
+        row = row/16; col = col/16;
         for(int i = 0; i < this.subscribers.size(); ++i) {
-            if(subscribers.get(i).type == -1) {
-                if(subscribers.get(i).position.y/16 == row && subscribers.get(i).position.x/16 == col)
-                    return true;
-            }
-            else {
-                if((subscribers.get(i).position.y/16 == row || subscribers.get(i).position.y/16 + 1 == row)
-                    && (subscribers.get(i).position.x/16 == col || subscribers.get(i).position.x/16 + 1 == col)) {
-                    return true;
+            if(this.subscribers.indexOf(current) != i && this.subscribers.indexOf(tank) != i) {
+                if(subscribers.get(i).type == -1) {
+                    if(subscribers.get(i).position.y/16 == row && subscribers.get(i).position.x/16 == col) {
+                        this.removeSubscriber(this.subscribers.get(i));
+                        return true;
+                    }
+                }
+                else {
+                    if((subscribers.get(i).position.y/16 == row || subscribers.get(i).position.y/16 + 1 == row)
+                        && (subscribers.get(i).position.x/16 == col || subscribers.get(i).position.x/16 + 1 == col)) {
+                        if(subscribers.get(i).type != current.tank.type) {
+                            this.subscribers.get(i).live_points -= 1;
+                            return true;
+                        }
+                    }
                 }
             }
         }

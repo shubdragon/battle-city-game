@@ -29,8 +29,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -55,6 +53,8 @@ public class ToysArea extends JPanel
     public GraphDescriptor gd;
     public CollisionSystem coll_sys;
     
+    public int enemy_tank_counter = 24;
+    
     public Player local = null;
     
     public ToysArea(int width, int height, GraphDescriptor gd, PlayGround pg)
@@ -73,6 +73,7 @@ public class ToysArea extends JPanel
         // Setting up tank of local player
         Tank player_tank = new Tank(local, this, Tank.NORMAL);
         player_tank.position = new Point(192, 420);
+        player_tank.lives = 2;
         
         // Adding tank to local player
         local.subscribeTank(player_tank);

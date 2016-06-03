@@ -37,12 +37,14 @@ public class Bullet extends Element
     private final ToysArea area;
     private boolean is_collided = false;
     private final Bullet bull;
+    public final Tank tank;
     
-    public Bullet(int party, ToysArea area)
+    public Bullet(int party, ToysArea area, Tank tank)
     {
-        this.type = 6;
+        this.type = -1;
         this.area = area;
         this.bull = this;
+        this.tank = tank;
     }
     
     public void addCollisionSystem(CollisionSystem coll_sys)
@@ -58,38 +60,81 @@ public class Bullet extends Element
                 @Override
                 public void run()
                 {
+                    boolean dynamic = false;
+                    int c;
                     while(!is_collided) {
+                        // Check collision with dynamic and static elements
                         switch(direction)
                         {
                             case Tank.UP:
-                                if(!coll_sys.predictCollision(position.x, position.y - 2)) {
-                                    position.y -= 2;
+                                c = coll_sys.predictCollision(position.x, position.y - 2); 
+                                if(c == 0) {
+                                    if(!coll_sys.predictCollisionSubscriber(position.x, position.y - 2, bull, tank))
+                                        position.y -= 2;
+                                    else {
+                                        dynamic = true; is_collided = true;
+                                    }
                                 }
                                 else {
+                                    if(c == 2) {
+                                        System.out.println("Reducing life");
+                                        bull.area.local.getTanks().get(0).live_points = 0;
+                                        bull.area.local.getTanks().get(0).lives = -1;
+                                    }
                                     is_collided = true;
                                 }
                                 break;
                             case Tank.DOWN:
-                                if(!coll_sys.predictCollision(position.x, position.y + 2)) {
-                                    position.y += 2;
+                                c = coll_sys.predictCollision(position.x, position.y + 2); 
+                                if(c == 0) {
+                                    if(!coll_sys.predictCollisionSubscriber(position.x, position.y + 2, bull, tank))
+                                        position.y += 2;
+                                    else {
+                                        dynamic = true; is_collided = true;
+                                    }
                                 }
                                 else {
+                                    if(c == 2) {
+                                        System.out.println("Reducing life");
+                                        bull.area.local.getTanks().get(0).live_points = 0;
+                                        bull.area.local.getTanks().get(0).lives = -1;
+                                    }
                                     is_collided = true;
                                 }
                                 break;
                             case Tank.LEFT:
-                                if(!coll_sys.predictCollision(position.x - 2, position.y)) {
-                                    position.x -= 2;
+                                c = coll_sys.predictCollision(position.x - 2, position.y); 
+                                if(c == 0) {
+                                    if(!coll_sys.predictCollisionSubscriber(position.x - 2, position.y, bull, tank))
+                                        position.x -= 2;
+                                    else {
+                                        dynamic = true; is_collided = true;
+                                    }
                                 }
                                 else {
+                                    if(c == 2) {
+                                        System.out.println("Reducing life");
+                                        bull.area.local.getTanks().get(0).live_points = 0;
+                                        bull.area.local.getTanks().get(0).lives = -1;
+                                    }
                                     is_collided = true;
                                 }
                                 break;
                             case Tank.RIGHT:
-                                if(!coll_sys.predictCollision(position.x + 2, position.y)) {
-                                    position.x += 2;
+                                c = coll_sys.predictCollision(position.x + 2, position.y); 
+                                if(c == 0) {
+                                    if(!coll_sys.predictCollisionSubscriber(position.x + 2, position.y, bull, tank))
+                                        position.x += 2;
+                                    else {
+                                        dynamic = true; is_collided = true;
+                                    }
                                 }
                                 else {
+                                    if(c == 2) {
+                                        System.out.println("Reducing life");
+                                        bull.area.local.getTanks().get(0).live_points = 0;
+                                        bull.area.local.getTanks().get(0).lives = -1;
+                                    }
                                     is_collided = true;
                                 }
                                 break;
@@ -99,31 +144,45 @@ public class Bullet extends Element
                         } catch (InterruptedException ex) {
                             Logger.getLogger(Tank.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        if(is_collided) {
-                            area.toys.remove(bull);
-                            Cell cell = new Cell(0,0);
-                            switch(direction)
-                            {
-                                case Tank.UP:
-                                    cell = coll_sys.getCollisionCell(position.x, position.y - 2);
-                                    break;
-                                case Tank.DOWN:
-                                    cell = coll_sys.getCollisionCell(position.x, position.y + 2);
-                                    break;
-                                case Tank.LEFT:
-                                    cell = coll_sys.getCollisionCell(position.x - 2, position.y);
-                                    break;
-                                case Tank.RIGHT:
-                                    cell = coll_sys.getCollisionCell(position.x + 2, position.y);
-                                    break;
+                        if(!dynamic) {
+                            if(is_collided) {
+                                area.toys.remove(bull);
+                                coll_sys.removeSubscriber(bull);
+                                Cell cell = new Cell(0,0);
+                                switch(direction)
+                                {
+                                    case Tank.UP:
+                                        cell = coll_sys.getCollisionCell(position.x, position.y - 2);
+                                        break;
+                                    case Tank.DOWN:
+                                        cell = coll_sys.getCollisionCell(position.x, position.y + 2);
+                                        break;
+                                    case Tank.LEFT:
+                                        cell = coll_sys.getCollisionCell(position.x - 2, position.y);
+                                        break;
+                                    case Tank.RIGHT:
+                                        cell = coll_sys.getCollisionCell(position.x + 2, position.y);
+                                        break;
+                                }
+                                if((cell.row - 2)/2 != 15 && (cell.col - 2)/2 != 17) {
+                                    String code = damage(area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2], direction);
+                                    if(code.equals("xxxx")) {
+                                        System.out.println("HELLO SUCIDE");
+                                        area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2] = "Z   ";
+                                        area.gd.need_redraw = 1;
+                                        tank.lives = 0;
+                                    }
+                                    else {
+                                        area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2] = code;
+                                        area.gd.need_redraw = 1;
+                                    }
+                                }
                             }
-                            //System.out.println((cell.row-2) + ", " + (cell.col-2));
-                            area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2] = 
-                                damage(area.gd.im[(cell.row - 2)/2][(cell.col - 2)/2], direction);
-                            area.gd.translate(null);
-                            
                         }
-                        area.repaint();
+                        else {
+                            area.toys.remove(bull);
+                            coll_sys.removeSubscriber(bull);
+                        }
                     }
                 }
             }
@@ -143,6 +202,9 @@ public class Bullet extends Element
             case "K   ":
                 code = "kkkk";
                 break;
+            case "X":
+                code = "xxxx";
+                return code;
         }
         char[] c = code.toCharArray();
         switch(direction) {

@@ -27,10 +27,7 @@ package tank;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.ImageIcon;
-import java.lang.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,10 +61,9 @@ public class Tank extends Element implements Controller, Mechanics
     private String bonus;
     private String player_type;
     
-    private final Player player;
+    public final Player player;
     private final ToysArea area;
     
-    private long time_starter;
     private long time_finalizer = 0;
     
     public Tank(Player player, ToysArea area, int type)
@@ -77,8 +73,33 @@ public class Tank extends Element implements Controller, Mechanics
         this.type = type;
         this.resource = this.getPathFromType();
         this.player_type = getPlayerType();
+        this.live_points = getLiveFromType();
         this.bonus = "";
         this.image = new ImageIcon("resources/blocks/tanks/" + resource + player_type + bonus + "_up.png");
+    }
+    
+    private int getLiveFromType()
+    {
+        switch(this.type)
+        {
+            case Tank.RAPID:
+                return 2;
+            case Tank.NORMAL:
+                return 1;
+            case Tank.SMALL:
+                return 1;
+            case Tank.BALISTIC:
+                return 2;
+            case Tank.SURVEY:
+                return 1;
+            case Tank.ACUATIC:
+                return 2;
+            case Tank.CONTINUOUS:
+                return 2;
+            case Tank.FORTE:
+                return 3;
+        }
+        return 1;
     }
     
     private String getPlayerType()
@@ -235,7 +256,7 @@ public class Tank extends Element implements Controller, Mechanics
         if(this.time_finalizer == 0) {
             this.time_finalizer = 1;
             // Creating and configuring bullet
-            Bullet bullet = new Bullet(this.player.party, area);
+            Bullet bullet = new Bullet(this.player.party, area, this);
             bullet.orientation = this.orientation;
             switch(this.orientation) {
                 case Tank.UP:
@@ -256,6 +277,7 @@ public class Tank extends Element implements Controller, Mechanics
                     break;
             }
             bullet.addCollisionSystem(coll_sys);
+            coll_sys.addSubscriber(bullet);
             bullet.repainted = false;
             this.area.toys.add(bullet);
             

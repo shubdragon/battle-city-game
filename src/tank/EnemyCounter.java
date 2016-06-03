@@ -27,6 +27,8 @@ package tank;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,11 +40,18 @@ import javax.swing.JPanel;
 public class EnemyCounter extends JPanel 
 {
     int counter = 24;
+    public List<JLabel> labels = new ArrayList<>();
     
     public EnemyCounter()
     {
         super(new GridLayout(12, 2));
         super.setBackground(Color.GRAY);
+        setLabels();
+    }
+    private void setLabels()
+    {
+        for(int i = 0; i < 24; ++i)
+            labels.add(new JLabel(new ImageIcon("resources/blocks/status/enemy_counter.png")));
     }
     
     public void startCounter()
@@ -51,7 +60,7 @@ public class EnemyCounter extends JPanel
         
         // Draw enemies no screen
         for(int i = 0; i < counter; ++i)
-            this.add(new JLabel(new ImageIcon("resources/blocks/status/enemy_counter.png")));
+            this.add(labels.get(i));
     }
     
     private void reset()
